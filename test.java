@@ -14,5 +14,8 @@ public class test
 		System.out.println("Bubuk saya");
 		System.out.println("Min gruel");
 		System.out.println("Benim gruel");
+		System.out.println("Kinamumuhian kita");
+		System.out.println("Saya benci awak");
+		System.out.println("Kuv ntxub koj");
 	}
 }
