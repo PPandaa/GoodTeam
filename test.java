@@ -11,6 +11,8 @@ public class test
 		System.out.println("Jeg hader dig");
 		System.out.println("Gorroto dut");
 		System.out.println("Ich hasse dich");
-		
+		System.out.println("Bubuk saya");
+		System.out.println("Min gruel");
+		System.out.println("Benim gruel");
 	}
 }
