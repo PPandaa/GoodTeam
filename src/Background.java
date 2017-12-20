@@ -1,26 +1,23 @@
-import java.awt.*; 
-import java.awt.event.*;
-import javax.swing.*;
-import java.awt.Container.*;
-import java.util.*;
+import java.util.Date;
 
 public class Background {
 
 	public static final double DEFAULT_TEMPERATURE	= 26;
 	public static final double DEFAULT_PH	= 7;
 	public static final double DEFAULT_CLEANLINESS = 90;
-	public static final double DEFAULT_OXYGENCONTENT = 80;
+	public static final double DEFAULT_OXYGENCONTENT = 8;
 	
 	private double temperature;
 	private double pHValue;
 	private double oxygenContent;  //含氧量
+	private double maxOxygenContent;
 	private double cleanliness;
 	private Date date;
 	private Date time;
 	private String month_string;
 	private int month_int;
 	private int second=0;
-	private int speed = 1000;
+//	private int speed = 1000;
 	private Season season;
 	
 	public Background()
@@ -49,6 +46,7 @@ public class Background {
 
 	public void setTemperature(double temperature) {
 		this.temperature = temperature;
+		setMaxOxygenContent();
 	}
 
 	public double getpHValue() {
@@ -99,6 +97,16 @@ public class Background {
 		return season;
 	}
 	
+	public void setMaxOxygenContent(double maxOxygenContent)
+	{
+		this.maxOxygenContent = maxOxygenContent;
+	}
+	
+	public double getMaxOxygenContent()
+	{
+		return maxOxygenContent;
+	}
+	
 	public void setSeason(Season season) {
 		this.season = season;
 	}
@@ -109,11 +117,13 @@ public class Background {
 		setpHValue(DEFAULT_PH);
 		setCleanliness(DEFAULT_CLEANLINESS);
 		setOxygenContent(DEFAULT_OXYGENCONTENT);
+		setMaxOxygenContent();
 	}
 	
 	public void changeTemperature(double var)
 	{
 		temperature += var;
+		setMaxOxygenContent();
 	}
 	
 	public void changepHValue(double var)
@@ -131,9 +141,22 @@ public class Background {
 		cleanliness += var;
 	}
 	
+	public void setMaxOxygenContent()
+	{
+		//0-10度：11ppm  ,  11-20：9ppm  ,  21-30：7ppm  ,  31-40：6ppm
+		if (temperature < 10)
+			maxOxygenContent = 11;
+		else if (temperature < 20)
+			maxOxygenContent = 9;
+		else if (temperature < 30)
+			maxOxygenContent = 7;
+		else 
+			maxOxygenContent = 6;
+	}
+	
 	@Override
 	public String toString(){
-		return String.format("溫度:%.1f°C pH值:%.1f 含氧量:%.1fPPM 乾淨度:%.1f%c  季節:%s 日期:%tF%n 時間:%tT%n \n",
+		return String.format("溫度:%.1f°C pH值:%.1f 含氧量:%.1fPPM 乾淨度:%.1f%c  季節:%s 日期:%tF%n 時間:%tT%n ",
 				getTemperature(),getpHValue(),getOxygenContent(),getCleanliness(),37,season.getName(),getDate(),getTime());
 	}
 }

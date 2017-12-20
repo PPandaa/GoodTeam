@@ -1,60 +1,48 @@
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimerTask;
 
 public class BackgroundTask extends TimerTask {
+	private static final int perSecond = 1000;
 	private Background background; 
-//	private SimulateInterface simulateInterface;
 	private FishManager fishManager;
+	private BackgroundManager backgroundManager;
 	private Date date;
 	
-	public BackgroundTask(Background bg,FishManager fishManager)
+	public BackgroundTask(Background background,FishManager fishManager, BackgroundManager backgroundManager)
 	{
-		background = bg;
-//		simulateInterface = SI;
-		date = new Date();
+		this.background = background;
+		this.backgroundManager = backgroundManager;
 		this.fishManager = fishManager;
-	}
-	
-	public void display()
-	{
-		System.out.print(background);
+		date = new Date();
 	}
 	
 	@Override
 	public void run() {
 		int sec = background.getSecond();
-//		background.changeTem(background.getSecond());
-		//background.changepH(background.getSecond());
-		//fishes = simulateInterface.getFish();
+		System.out.println("\n\n");
+		backgroundManager.display();
+		fishManager.printFishes();
+		
+		//背景資訊改變
+		backgroundManager.growingCleanliness(sec);
+		backgroundManager.growingOxygenContent(sec);
+		backgroundManager.growingpH(sec);
+		backgroundManager.growingTemperature(sec);
+		//魚資訊改變
 		if(fishManager.haveFish())
 		{
 			fishManager.growingAge(sec);
 			fishManager.growingLength(sec);
-//			fishManager.growingLife(sec);
+			fishManager.growingWeight(sec);
 			fishManager.growingSatiation(sec);
-//			for(int i = 0; i < fishes.size();i++)
-//			{
-//				fishes.get(i).changeLength(background.getSecond());
-//				fishes.get(i).changeWeight(background.getSecond());
-//				fishes.get(i).changeSatiation(background.getSecond());
-//				fishes.get(i).changeLife(background.getSecond());
-//			}
+			fishManager.growingExcretion(sec);
+			fishManager.growingLife(sec);
 		}
-		//simulateInterface.autoFeed();
-//		background.changeOxygenContent(background.getSecond(), simulateInterface.inflatorBtn, simulateInterface.pumpBtn);
-//		background.changeCleanliness(background.getSecond(), simulateInterface.pumpBtn);
-		
-		
-		long time = date.getTime();
-//		System.out.println(time);
-		time +=1000;
+		//時間改變
+		long time = date.getTime() + perSecond;
 		date.setTime(time);
 		background.setDate(date);
 		background.setTime(date); 
-		//System.out.println(background.getSecond());
-//		System.out.println(sec);
-		sec++;
-		background.setSecond(sec) ; 
+		background.setSecond(++sec) ; 
 	}
 }

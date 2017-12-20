@@ -1,8 +1,5 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.awt.Container.*;
-import java.util.*;
+import java.util.Date;
+import java.util.Scanner;
 import java.util.Timer;
 
 public class Setting {
@@ -11,7 +8,7 @@ public class Setting {
 	{
 	}
 	
-	public int runSetting(BackgroundTask backgroundTask, Background background, FishManager fishManager, Timer timer)
+	public int runSetting(BackgroundTask backgroundTask, Background background, FishManager fishManager, BackgroundManager backgroundManager, Timer timer)
 	{
 		int input;
 		System.out.println("1.回到主畫面\n2.加速\n-1.離開設定");
@@ -26,7 +23,7 @@ public class Setting {
 			if(input == 2)
 			{
 				backgroundTask.cancel();
-				backgroundTask = new BackgroundTask(background, fishManager);
+				backgroundTask = new BackgroundTask(background, fishManager, backgroundManager);
 				timer.schedule(backgroundTask,new Date(),speedUp());
 			}
 			System.out.println("1.回到主畫面\n2.加速\n-1.離開設定");

@@ -1,10 +1,3 @@
-import java.awt.*; 
-import java.awt.event.*;
-import javax.swing.*;
-import java.awt.Container.*;
-import java.util.*;
-import java.util.Timer;
-
 public class Test {
 	public static void main(String args[])
 	{

@@ -1,8 +1,6 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.awt.Container.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Scanner;
 import java.util.Timer;
 
 public class SimulateInterface
@@ -35,25 +33,28 @@ public class SimulateInterface
 
 		// 初始化背景
 		background = new Background();
-		backgroundManager = new BackgroundManager(background);
 		// 初始化魚
 		fishes = new ArrayList<Fish>();
-		fishStore = new FishStore(background, fishes);
-		fishManager = new FishManager(fishes, background, backgroundManager);
+		Fish a = new Fish("1", 1, 1, 0);
+		Fish b = new Fish("2", 2, 0, 1);
+		Fish c = new Fish("3", 3, 1, 2);
+		Fish d = new Fish("4", 4, 0, 3);
+		fishes.add(a);
+		fishes.add(b);
+		fishes.add(c);
+		fishes.add(d);
+		fishStore = new FishStore(fishes);
+		// 初始化操作介面
+		fishManager = new FishManager(fishes, background);
+		backgroundManager = new BackgroundManager(background, fishManager);
 		// 初始化設定
 		setting = new Setting(background);
 		// 初始化Timer、背景任務
-		backgroundTask = new BackgroundTask(background, fishManager);
+		backgroundTask = new BackgroundTask(background, fishManager, backgroundManager);
 		timer = new Timer();
 		timer.schedule(backgroundTask, new Date(), 1000);
 		// timer.schedule(new backgroundTask(),new Date(),1000);
 		// timer.schedule(backgroundTask,new Date(),setting.speedUp());
-
-		// 初始化按鈕
-		// autoFeedBtn = false;
-		// thermostatBtn = false;
-		// inflatorBtn = false;
-		// pumpBtn = false;
 
 		scanner = new Scanner(System.in);
 	}
@@ -70,7 +71,7 @@ public class SimulateInterface
 			switch (input)
 			{
 			case 1: // 1.印背景資訊
-				backgroundTask.display();
+				backgroundManager.display();
 				break;
 			case 2: // 2.印魚種資訊
 				fishManager.printFishes();
@@ -79,7 +80,7 @@ public class SimulateInterface
 				fishStore.addFish();
 				break;
 			case 4: // 4.使用設定功能
-				setting.runSetting(backgroundTask, background, fishManager, timer);
+				setting.runSetting(backgroundTask, background, fishManager, backgroundManager, timer);
 				break;
 			case 5: // 5.餵食
 				fishManager.feed();

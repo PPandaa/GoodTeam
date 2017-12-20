@@ -1,9 +1,3 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.awt.Container.*;
-import java.util.*;
-import java.util.Timer;
 import java.util.Random;
 
 public class Fish {
@@ -59,9 +53,9 @@ public class Fish {
 		sick = false;
 		life = 100 ;
 		suitableMaxTemperature = 28;
-		suitableMinTemperature = 22;
+		suitableMinTemperature = 20;
 		suitableMaxpH = 8.0;
-		suitableMinpH = 7.0;
+		suitableMinpH = 6.0;
 		dead = false;
 	}
 	
@@ -158,6 +152,17 @@ public class Fish {
 		return character;
 	}
 	
+	public boolean isDead()
+	{
+		return dead;
+	}
+
+	public void setDead(boolean dead)
+	{
+		this.dead = dead;
+	}
+
+	
 	public void changeAge(int var)
 	{
 		age += var;
@@ -186,27 +191,35 @@ public class Fish {
 	
 	public void changeLife(double var)
 	{
-		if (!dead)
+		if (sick && var < 0)life = life + var * 2;	//生病生命力下降兩倍
+		else life += var;
+		
+		if (life > SICK_LIFE)	//生命力 > 40 健康
 		{
-			if (sick && var < 0)life = life + var * 2;	//生病生命力下降兩倍
-			else life += var;
-			
-			if (life > SICK_LIFE)	//生命力 > 40 健康
+			sick = false;
+			if (life > maxLife)	//不超過最大生命
+				life = maxLife;
+		}
+		else					//生命力 < 40 生病
+		{
+			sick = true;
+			if (life < 0)		//生命力< 0 死亡
 			{
-				sick = false;
-				if (life > maxLife)	//不超過最大生命
-					life = maxLife;
-			}
-			else					//生命力 < 40 生病
-			{
-				sick = true;
-				if (life < 0)		//生命力< 0 死亡
-				{
-					life = 0;
-					dead = true;
-				}
+				life = 0;
+				dead = true;
 			}
 		}
+	}
+	
+	public boolean changeExcretion(double var)
+	{
+		excretion += var;
+		if (excretion >= MAX_EXCRETION)
+		{
+			excretion = 0;
+			return true;
+		}
+		return false;
 	}
 	
 	public int getRealAge()
@@ -259,12 +272,19 @@ public class Fish {
 			return "否";
 	}
 	
+	public boolean isStarving()
+	{
+		if (satiation == 0)
+			return true;
+		return false;
+	}
+	
 	@Override
 	public String toString(){
 		if (dead == true)
 			return ("姓名:"+ getName() +" 死亡");
 		return String.format("姓名:%s    魚種:%s    年齡:%d歲        性別:%s\n"
-						   + "飽食度:%d%c    長度:%.5fcm    重量:%.1fg    排泄:%d%c\n"
+						   + "飽食度:%d%c    長度:%.5fcm    重量:%.5fg    排泄:%d%c\n"
 						   + "有無生病:%s    生命力:%.0f",
 				getName(),getCategory(),getRealAge(),getGender(),getSatiation(),37,getLength(),getWeight(),getExcretion(),37,isSick(),getLife());
 	}

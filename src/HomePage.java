@@ -1,16 +1,9 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.awt.Container.*;
-import java.util.*;
+import java.util.Scanner;
 
-public class HomePage extends JFrame{
-	/*private JLabel background;
-	private JTextArea topic;
-	private JButton start;
-	private JButton instruction;
-	private JButton toContinue;
-	private BorderLayout layout;*/
+import javax.swing.JFrame;
+
+public class HomePage extends JFrame
+{
 	private SimulateInterface SI;
 	
 	public HomePage()
@@ -41,7 +34,6 @@ public class HomePage extends JFrame{
 		Scanner scanner = new Scanner(System.in);
 		int input = 0;   //選擇1開始2繼續3說明
 		boolean firstIn = true;
-		SimulateInterface SI = new SimulateInterface();
 		
 		System.out.println("歡迎進入FFS");
 		//System.out.println("Start輸入1 Continue輸入2 查看說明輸入3");

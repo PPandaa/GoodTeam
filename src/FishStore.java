@@ -1,18 +1,12 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.awt.Container.*;
-import java.util.*;
-import java.util.Timer;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class FishStore {
 	public static final int MAX_FISH = 15;
 	private ArrayList<Fish> fishes;
-	private Background background;
 	Scanner input = new Scanner(System.in);
-	public FishStore(Background bg, ArrayList<Fish> fishes)
+	public FishStore(ArrayList<Fish> fishes)
 	{
-		this.background = bg;
 		this.fishes = fishes;
 	}
 	public void addFish()
