@@ -8,6 +8,7 @@ public class HomePage extends JFrame
 	
 	public HomePage()
 	{
+		//123
 		/*Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
 		ImageIcon img = new ImageIcon("C:/Users/user/workspace/FFS/src/background.jpg");
 		//setBak();
@@ -20,7 +21,7 @@ public class HomePage extends JFrame
 		toContinue = new JButton();
 		topic.setBackground(Color.BLUE);
 		topic.setText("Fish Farming"+"\n"+"   System");
-		topic.setFont(new Font("標楷體",Font.BOLD,150));
+		topic.setFont(new Font("璅扑擃�",Font.BOLD,150));
 		//background.setOpaque(false);
 		background.setSize(d.width,d.height);
 		//background.setBackground(Color.GREEN);
@@ -32,18 +33,18 @@ public class HomePage extends JFrame
 	public void run()
 	{
 		Scanner scanner = new Scanner(System.in);
-		int input = 0;   //選擇1開始2繼續3說明
+		int input = 0;   //����1����2蝜潛��3隤芣��
 		boolean firstIn = true;
 		
-		System.out.println("歡迎進入FFS");
-		//System.out.println("Start輸入1 Continue輸入2 查看說明輸入3");
+		System.out.println("甇∟��脣FFS");
+		//System.out.println("Start頛詨1 Continue頛詨2 ���牧��撓�3");
 		while(input != -1 )
 		{
-			System.out.println("1.Start 2.Continue 3.查看說明  -1.結束");
+			System.out.println("1.Start 2.Continue 3.���牧���  -1.蝯��");
 			input = scanner.nextInt();
 			if(firstIn)
 			{
-				System.out.println("歡迎進入模擬介面");
+				System.out.println("甇∟��脣璅⊥隞");
 				firstIn = false;
 			}
 			switch(input)
@@ -65,7 +66,7 @@ public class HomePage extends JFrame
 				System.out.println("Try again!");
 			}
 		}
-		System.out.println("結束");
+		System.out.println("蝯��");
 	}
 	/*public void setBak(){
 		Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
