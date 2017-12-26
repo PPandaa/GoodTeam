@@ -8,7 +8,7 @@ public class HomePage extends JFrame
 	
 	public HomePage()
 	{
-		//123
+		//1234567
 		/*Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
 		ImageIcon img = new ImageIcon("C:/Users/user/workspace/FFS/src/background.jpg");
 		//setBak();
