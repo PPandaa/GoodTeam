@@ -3,6 +3,8 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.Timer;
 
+import function.Instruction;
+
 public class SimulateInterface
 {
 	public static final int LOW_SATIATION = 20;
@@ -105,7 +107,7 @@ public class SimulateInterface
 				backgroundManager.pressThermostatBtn();
 				break;
 			case 11: // 11.說明
-				Instruction.getInstruction();
+				//Instruction.getInstruction();
 				break;
 			case -1: // -1.結束
 				return -1;
