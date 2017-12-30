@@ -44,44 +44,19 @@ public class HomePage extends JPanel{
 		start.setContentAreaFilled(false);//不會自行繪製按鈕背景
 		ImageIcon newStart = new ImageIcon(getClass().getResource("start-2.PNG")); 
 		newStart.setImage(newStart.getImage().getScaledInstance(550,135,Image.SCALE_DEFAULT));
-		start.setRolloverIcon(newStart);
-		/*start.addMouseListener(
-				new MouseAdapter() {
-					@Override
-					public void mousePressed(MouseEvent event) {
-						
-					}
-				}
-		);*/
+		start.setRolloverIcon(newStart);//摸到時換一張圖
 		
 		continuee.setBorder(null);//不繪製按鈕的邊
 		continuee.setContentAreaFilled(false);//不會自行繪製按鈕背景
 		ImageIcon newContinue = new ImageIcon(getClass().getResource("continue-2.PNG")); 
 		newContinue.setImage(newContinue.getImage().getScaledInstance(550,135,Image.SCALE_DEFAULT));
-		continuee.setRolloverIcon(newContinue);
-		/*continuee.addMouseListener(
-				new MouseAdapter() {
-					@Override
-					public void mousePressed(MouseEvent event) {
-						
-					}
-				}
-		);*/
+		continuee.setRolloverIcon(newContinue);//摸到時換一張圖
 		
 		instruction.setBorder(null);//不繪製按鈕的邊
 		instruction.setContentAreaFilled(false);//不會自行繪製按鈕背景
 		ImageIcon newInstruction = new ImageIcon(getClass().getResource("instruction-2.PNG")); 
 		newInstruction.setImage(newInstruction.getImage().getScaledInstance(550,135,Image.SCALE_DEFAULT));
-		instruction.setRolloverIcon(newInstruction);
-		/*instruction.addMouseListener(
-			new MouseAdapter() {
-				@Override
-				public void mousePressed(MouseEvent event) {
-					
-				}
-			}
-	
-		);*/
+		instruction.setRolloverIcon(newInstruction);//摸到時換一張圖
 				
 		setBackground(frame);//調用背景方法
 		

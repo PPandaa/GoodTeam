@@ -1,4 +1,8 @@
+package function;
 import java.util.Scanner;
+
+import background.Background;
+import function.FishManager;
 
 public class BackgroundManager
 {
@@ -15,7 +19,7 @@ public class BackgroundManager
 
 	private boolean inflatorBtn; // 打氣機按鈕
 	private boolean thermostatBtn;// 調溫器按鈕
-	private boolean pumpBtn; // 幫浦按鈕
+	private boolean filterBtn; // 幫浦按鈕
 	
 	private double thermostatTemperature;	//調溫器的溫度
 
@@ -29,7 +33,7 @@ public class BackgroundManager
 		//按鈕預設為關閉
 		thermostatBtn = false;
 		inflatorBtn = false;
-		pumpBtn = false;
+		filterBtn = false;
 	}
 
 	/**
@@ -53,36 +57,36 @@ public class BackgroundManager
 	 * 按下調溫器按鈕
 	 * 開啟後需輸入溫度
 	 */
-	public void pressThermostatBtn()
+	public void pressThermostatBtn(int temperature)
 	{
 		if (thermostatBtn)
 		{
 			thermostatBtn = false;
-			System.out.println("調溫器關閉");
+//			System.out.println("調溫器關閉");
 		}
 		else
 		{
 			thermostatBtn = true;
-			System.out.println("調溫器開啟");
-			System.out.println("設定溫度：");
-			Scanner scanner = new Scanner(System.in);
-			thermostatTemperature = scanner.nextInt();
+//			System.out.println("調溫器開啟");
+//			System.out.println("設定溫度：");
+//			Scanner scanner = new Scanner(System.in);
+			thermostatTemperature = temperature;
 		}
 	}
 
 	/**
-	 * 按下幫浦按鈕
+	 * 按下過濾機按鈕
 	 */
-	public void pressPumpBtn()
+	public void pressFilter()
 	{
-		if (pumpBtn)
+		if (filterBtn)
 		{
-			pumpBtn = false;
+			filterBtn = false;
 			System.out.println("幫浦關閉");
 		}
 		else
 		{
-			pumpBtn = true;
+			filterBtn = true;
 			System.out.println("幫浦開啟");
 		}
 	}
@@ -120,7 +124,7 @@ public class BackgroundManager
 	 */
 	public void growingpH(int sec)	//因為pHValue不會因時間而改變數值，因此將按鈕條件寫在外面直接判斷
 	{
-		if (pumpBtn)
+		if (filterBtn)
 		{
 			//每秒趨近0.01
 			if (sec % 1 == 0)
@@ -164,7 +168,7 @@ public class BackgroundManager
 	 */
 	public void growingCleanliness(int sec)
 	{
-		if (pumpBtn)
+		if (filterBtn)
 		{
 			if (sec % 1 == 0)
 			{

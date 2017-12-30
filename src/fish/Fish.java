@@ -1,6 +1,8 @@
+package fish;
+
 import java.util.Random;
 
-public class Fish {
+public class Fish{
 	public static final int AGE = 1036800;	//12天長一歲
 	public static final int SUITABLE_CLEANLINESS = 40;	//最低乾淨度
 	public static final int SUITABLE_OXYGENCONTENT = 4;	//最低含氧量
@@ -34,14 +36,27 @@ public class Fish {
 	private final double suitableMinTemperature;	//最小適溫
 	private final double suitableMaxpH;			//最大適pH
 	private final double suitableMinpH;			//最小適pH
+
+    
+    private int categoryChoice;//將魚名換算成陣列的index
+	private int genderChoice;//將魚的性別換算成陣列的index
 	
-	public Fish(String name,int category,int gender,int age)
+	public Fish(String name,String category,String gender,String age)
 	{
+		//字串比對，換算成index
+		for(categoryChoice = 0;categoryChoice < 15;categoryChoice++) {
+			if(fishCategory[categoryChoice].equals(category))
+				break;
+		}
+		for(genderChoice = 0;genderChoice < 2;genderChoice++) {
+			if(fishGender[genderChoice].equals(gender))
+				break;
+		}
 		//設初始值
 		this.name = name;
-		this.age = age;
-		this.category = fishCategory[category];
-		this.gender = fishGender[gender];
+		this.age = Integer.parseInt(age);
+		this.category = fishCategory[categoryChoice];
+		this.gender = fishGender[genderChoice];
 		setRealAge();
 		setMaxLife();
 		//gender = "male";
@@ -283,9 +298,10 @@ public class Fish {
 	public String toString(){
 		if (dead == true)
 			return ("姓名:"+ getName() +" 死亡");
-		return String.format("姓名:%s    魚種:%s    年齡:%d歲        性別:%s\n"
-						   + "飽食度:%d%c    長度:%.5fcm    重量:%.5fg    排泄:%d%c\n"
-						   + "有無生病:%s    生命力:%.0f",
+		return String.format("<html>姓名:%s    <br>魚種:%s    <br>年齡:%d歲        <br>性別:%s\n"
+						   + "<br>飽食度:%d%c    <br>長度:%.5fcm    <br>重量:%.5fg    <br>排泄:%d%c\n"
+						   + "<br>有無生病:%s    <br>生命力:%.0f</html>",
 				getName(),getCategory(),getRealAge(),getGender(),getSatiation(),37,getLength(),getWeight(),getExcretion(),37,isSick(),getLife());
 	}
 }
+
