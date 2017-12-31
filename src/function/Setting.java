@@ -3,10 +3,13 @@ package function;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Timer;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,13 +23,14 @@ import simulate.SimulateInterface;
 public class Setting extends JPanel{
 	Scanner scanner = new Scanner(System.in);
 	
+	public SimulateInterface SI;
 	public JButton back;
 	public JButton homepage;
-	public Setting(JFrame frame) {		
+	public Setting(JFrame frame, SimulateInterface SI) {		
 		
 		//setBackground(frame); //調用背景方法
 		//Container c = getContentPane(); //獲取JFrame面板
-		
+		this.SI = SI;
 		setLayout(null); 
 		this.setOpaque(false); //把JPanel設置為透明 這樣就不會遮住後面的背景 這樣你就能在JPanel隨意加元件了
 		
@@ -94,97 +98,140 @@ public class Setting extends JPanel{
 		homepage.setBounds(15, 550, 1500, 300); //設定位置、大小             
 		add(homepage);
 		
+		ButtonHandler handler = new ButtonHandler();
+		
 		JButton _1X = new JButton(_1xIcon);
 		_1X.setBorder(null);//不會繪製按鈕的邊
 		_1X.setContentAreaFilled(false);//不會自行繪製按鈕的背景
-		_1X.setBounds(500, 230, 120, 120);  //設定位置、大小            
+		_1X.setBounds(500, 230, 120, 120);  //設定位置、大小           
+		_1X.setActionCommand("1");
+		_1X.addActionListener(handler);
 		add(_1X);                      
 		                                                 
 		JButton _2X = new JButton(_2xIcon);  
 		_2X.setBorder(null);//不會繪製按鈕的邊
 		_2X.setContentAreaFilled(false);//不會自行繪製按鈕的背景
 		_2X.setBounds(650, 230, 120, 120);  //設定位置、大小         
+		_2X.setActionCommand("2");
+		_2X.addActionListener(handler);
 		add(_2X);                    
 		                                                  
 		JButton _4X = new JButton(_4xIcon); 
 		_4X.setBorder(null);//不會繪製按鈕的邊
 		_4X.setContentAreaFilled(false);//不會自行繪製按鈕的背景
 		_4X.setBounds(800, 230, 120, 120); //設定位置、大小          
+		_4X.setActionCommand("4");
+		_4X.addActionListener(handler);
 		add(_4X);                    
 		                                                  
 		JButton _8X = new JButton(_8xIcon); 
 		_8X.setBorder(null);//不會繪製按鈕的邊
 		_8X.setContentAreaFilled(false);//不會自行繪製按鈕的背景
 		_8X.setBounds(950, 230, 120, 120); //設定位置、大小          
+		_8X.setActionCommand("8");
+		_8X.addActionListener(handler);
 		add(_8X);                    
 		                                                   
 		JButton _16X = new JButton(_16xIcon);
 		_16X.setBorder(null);//不會繪製按鈕的邊
 		_16X.setContentAreaFilled(false);//不會自行繪製按鈕的背景
 		_16X.setBounds(1100, 230, 120, 120); //設定位置、大小         
+		_16X.setActionCommand("16");
+		_16X.addActionListener(handler);
 		add(_16X);     
 		
 		JButton _32X = new JButton(_32xIcon);
 		_32X.setBorder(null);//不會繪製按鈕的邊
 		_32X.setContentAreaFilled(false);//不會自行繪製按鈕的背景
 		_32X.setBounds(500, 400, 120, 120); //設定位置、大小             
+		_32X.setActionCommand("32");
+		_32X.addActionListener(handler);
 		add(_32X);                      
                                                 
 		JButton _64X = new JButton(_64xIcon); 
 		_64X.setBorder(null);//不會繪製按鈕的邊
 		_64X.setContentAreaFilled(false);//不會自行繪製按鈕的背景
 		_64X.setBounds(650, 400, 120, 120); //設定位置、大小           
+		_64X.setActionCommand("64");
+		_64X.addActionListener(handler);
 		add(_64X);                    
 		                                                  
 		JButton _128X = new JButton(_128xIcon);
 		_128X.setBorder(null);//不會繪製按鈕的邊
 		_128X.setContentAreaFilled(false);//不會自行繪製按鈕的背景
 		_128X.setBounds(800, 400, 120, 120); //設定位置、大小          
+		_128X.setActionCommand("128");
+		_128X.addActionListener(handler);
 		add(_128X);                    
 		                                                  
 		JButton _256X = new JButton(_256xIcon); 
 		_256X.setBorder(null);//不會繪製按鈕的邊
 		_256X.setContentAreaFilled(false);//不會自行繪製按鈕的背景
 		_256X.setBounds(950, 400, 120, 120); //設定位置、大小          
+		_256X.setActionCommand("256");
+		_256X.addActionListener(handler);
 		add(_256X);                    
 		                                                   
 		JButton _512X = new JButton(_512xIcon);
 		_512X.setBorder(null);//不會繪製按鈕的邊
 		_512X.setContentAreaFilled(false);//不會自行繪製按鈕的背景
 		_512X.setBounds(1100, 400, 120, 120); //設定位置、大小         
+		_512X.setActionCommand("512");
+		_512X.addActionListener(handler);
 		add(_512X);     
 		add(speedUp);
-		}
+		
+//		ButtonGroup buttonGroup = new ButtonGroup();
+//		buttonGroup.add(_1X);
+//		buttonGroup.add(_2X);
+//		buttonGroup.add(_4X);
+//		buttonGroup.add(_8X);
+//		buttonGroup.add(_16X);
+//		buttonGroup.add(_32X);
+//		buttonGroup.add(_64X);
+//		buttonGroup.add(_128X);
+//		buttonGroup.add(_256X);
+//		buttonGroup.add(_512X);
+	}
 	
-	public int runSetting(BackgroundTask backgroundTask, Background background, FishManager fishManager
-			, BackgroundManager backgroundManager, Timer timer,SimulateInterface SI)
+	private class ButtonHandler implements ActionListener
 	{
-		int input;
-		System.out.println("1.回到主畫面\n2.加速\n-1.離開設定");
-		input = scanner.nextInt();
-		while(input!=-1)
+		@Override
+		public void actionPerformed(ActionEvent e)
 		{
-			if(input == 1)
-			{
-				input = -1;
-				break;
-			}
-			if(input == 2)
-			{
-				backgroundTask.cancel();
-				backgroundTask = new BackgroundTask(background, fishManager, backgroundManager, SI);
-				timer.schedule(backgroundTask,new Date(),speedUp());
-			}
-			System.out.println("1.回到主畫面\n2.加速\n-1.離開設定");
-			input = scanner.nextInt();
+			SI.setSpeed(1000 / Integer.parseInt(e.getActionCommand()));
 		}
-		return input;
 	}
-	public int speedUp()
-	{
-		int speed = 1000;
-		System.out.println("輸入欲增加倍數");
-		speed = (int)(speed / scanner.nextInt());
-		return speed;
-	}
+	
+//	public int runSetting(BackgroundTask backgroundTask, Background background, FishManager fishManager
+//			, BackgroundManager backgroundManager, Timer timer,SimulateInterface SI)
+//	{
+//		int input;
+//		System.out.println("1.回到主畫面\n2.加速\n-1.離開設定");
+//		input = scanner.nextInt();
+//		while(input!=-1)
+//		{
+//			if(input == 1)
+//			{
+//				input = -1;
+//				break;
+//			}
+//			if(input == 2)
+//			{
+//				backgroundTask.cancel();
+//				backgroundTask = new BackgroundTask(background, fishManager, backgroundManager, SI);
+//				timer.schedule(backgroundTask,new Date(),speedUp());
+//			}
+//			System.out.println("1.回到主畫面\n2.加速\n-1.離開設定");
+//			input = scanner.nextInt();
+//		}
+//		return input;
+//	}
+//	public int speedUp()
+//	{
+//		int speed = 1000;
+//		System.out.println("輸入欲增加倍數");
+//		speed = (int)(speed / scanner.nextInt());
+//		return speed;
+//	}
 }

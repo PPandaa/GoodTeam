@@ -19,7 +19,7 @@ public class Test{
 	JPanel instructionHome = new Instruction(new Color(61, 89, 171),Color.WHITE, SwingConstants.VERTICAL);
 	JPanel instructionSim = new Instruction(new Color(61, 89, 171),Color.WHITE, SwingConstants.VERTICAL);
 	SimulateInterface simulateInterface = new SimulateInterface(frame);
-	JPanel setting = new Setting(frame);
+	JPanel setting = new Setting(frame, simulateInterface);
 	JPanel fishStore = new FishStore(frame,simulateInterface.getFish(),simulateInterface);
 	
 	CardLayout cardLayout;

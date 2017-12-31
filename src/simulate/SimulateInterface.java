@@ -399,4 +399,13 @@ public class SimulateInterface extends JPanel{
 		dateText.setText(String.format("日期:%tF%n", background.getDate()));
 		timeText.setText(String.format("時間:%tT%n", background.getTime()));
 	}
+	//設定速度
+	public void setSpeed(int speed)
+	{
+		Date date = background.getDate();
+		backgroundTask.cancel();
+		backgroundTask = new BackgroundTask(background, fishManager, backgroundManager, this, date);
+		timer = new Timer();
+		timer.schedule(backgroundTask,new Date(),speed);
+	}
 }

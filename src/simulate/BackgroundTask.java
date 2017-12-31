@@ -29,6 +29,7 @@ public class BackgroundTask extends TimerTask {
 		this.background = background;
 		this.backgroundManager = backgroundManager;
 		this.fishManager = fishManager;
+		this.SI = SI;
 		this.date = date;
 	}
 	@Override
