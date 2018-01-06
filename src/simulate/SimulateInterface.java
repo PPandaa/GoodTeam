@@ -394,7 +394,7 @@ public class SimulateInterface extends JPanel{
 			add(fishButton);
 			fishButtons.add(fishButton);
 		}
-		 
+		
 	}
 	
 	//將魚的Button加入模擬介面

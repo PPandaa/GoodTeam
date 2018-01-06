@@ -181,17 +181,7 @@ public class Setting extends JPanel{
 		add(_512X);     
 		add(speedUp);
 		
-//		ButtonGroup buttonGroup = new ButtonGroup();
-//		buttonGroup.add(_1X);
-//		buttonGroup.add(_2X);
-//		buttonGroup.add(_4X);
-//		buttonGroup.add(_8X);
-//		buttonGroup.add(_16X);
-//		buttonGroup.add(_32X);
-//		buttonGroup.add(_64X);
-//		buttonGroup.add(_128X);
-//		buttonGroup.add(_256X);
-//		buttonGroup.add(_512X);
+
 	}
 	
 	private class ButtonHandler implements ActionListener
@@ -202,36 +192,5 @@ public class Setting extends JPanel{
 			SI.setSpeed(1000 / Integer.parseInt(e.getActionCommand()));
 		}
 	}
-	
-//	public int runSetting(BackgroundTask backgroundTask, Background background, FishManager fishManager
-//			, BackgroundManager backgroundManager, Timer timer,SimulateInterface SI)
-//	{
-//		int input;
-//		System.out.println("1.回到主畫面\n2.加速\n-1.離開設定");
-//		input = scanner.nextInt();
-//		while(input!=-1)
-//		{
-//			if(input == 1)
-//			{
-//				input = -1;
-//				break;
-//			}
-//			if(input == 2)
-//			{
-//				backgroundTask.cancel();
-//				backgroundTask = new BackgroundTask(background, fishManager, backgroundManager, SI);
-//				timer.schedule(backgroundTask,new Date(),speedUp());
-//			}
-//			System.out.println("1.回到主畫面\n2.加速\n-1.離開設定");
-//			input = scanner.nextInt();
-//		}
-//		return input;
-//	}
-//	public int speedUp()
-//	{
-//		int speed = 1000;
-//		System.out.println("輸入欲增加倍數");
-//		speed = (int)(speed / scanner.nextInt());
-//		return speed;
-//	}
 }
+
