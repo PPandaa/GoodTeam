@@ -77,5 +77,10 @@ public class Season {
 	public void setTem(double tem) {
 		this.tem = tem;
 	}
+	@Override
+	public String toString(){
+		return this.getName();
+		
+	}
 
 }

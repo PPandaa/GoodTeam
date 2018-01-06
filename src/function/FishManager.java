@@ -26,6 +26,8 @@ public class FishManager
 	private Background background;
 	private int autoFeedTime;	//自動餵食時間(sec)
 	private boolean autoFeedBtn; // 自動餵魚按鈕
+	private int conflictId;//衝突魚類id
+	private boolean conflict = false;//是否有衝突魚類
 
 	public FishManager(ArrayList<FishButton> fishes, Background background)
 	{
@@ -195,10 +197,10 @@ public class FishManager
 					if (!fishes.get(i).getFish().inSuitablepH(background.getpHValue()))
 						var -= 0.1;
 					// 是否在適乾淨度內
-					if (background.getCleanliness() < Fish.SUITABLE_CLEANLINESS)
+					if (background.getCleanliness() < fishes.get(i).getFish().getSUITABLE_CLEANLINESS())
 						var -= 0.1;
 					// 是否在適含氧量內
-					if (background.getOxygenContent() < Fish.SUITABLE_OXYGENCONTENT)
+					if (background.getOxygenContent() < fishes.get(i).getFish().getSUITABLE_OXYGENCONTENT())
 						var -= 0.1;
 					// 是否挨餓中
 					if (fishes.get(i).getFish().isStarving())
@@ -234,6 +236,64 @@ public class FishManager
 			}
 		}
 	}
+	
+	/*
+	   魚：
+	         魚種衝突：紅十字、非洲慈鯛會攻擊其他所有魚種，若此兩種養在一起，體重大
+	                            者會攻擊體重小者，被攻擊者生命力每秒下降1-3
+	*/
+	public void conflict(int sec)
+	{
+		if(conflict == true)
+		{
+			for (int i = 0; i < fishes.size(); i++)
+			{
+				if(i != conflictId)
+				{
+					fishes.get(i).getFish().setLife
+					(fishes.get(i).getFish().getLife()-(random.nextDouble()));
+				}
+			}
+		}
+	}
+	
+	//找出是否有衝突的魚類    並知道哪一隻最重
+	
+	public void check(int sec)
+	{
+		double maxWeight=0;
+		int id=0;
+		for (int i = 0; i < fishes.size(); i++)
+		{
+			if(fishes.get(i).getFish().isAttack() == true)
+			{
+				conflict = true;
+				if(fishes.get(i).getFish().getWeight()>maxWeight)
+				{
+					id = i;
+					maxWeight = fishes.get(i).getFish().getWeight();
+				}
+			}
+			else
+			{
+				conflict = false;
+			}
+		}
+		conflictId = id;
+	}
+	
+	//刪除魚類
+	public void delete(int sec)
+	{
+		for (int i = 0; i < fishes.size(); i++)
+		{
+			if(fishes.get(i).btnX >=1400 && fishes.get(i).btnX <=1520 
+					&& fishes.get(i).btnY >=165 && fishes.get(i).btnY <=210 )
+			{
+				fishes.remove(i);
+			}
+		}
+	}
 
 	/**
 	 * 印出魚缸所有魚
@@ -263,5 +323,16 @@ public class FishManager
 	public int getFishNum()
 	{
 		return fishes.size();
+	}
+	
+	public int getDeadFishNum()
+	{
+		int num = 0;
+		for (int i = 0; i < fishes.size(); i++)
+		{
+			if (fishes.get(i).getFish().isDead())
+				num++;
+		}
+		return num;
 	}
 }

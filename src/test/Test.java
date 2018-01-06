@@ -3,140 +3,264 @@ package test;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.*;
 
+import database.DataBaseManager;
 import function.Instruction;
 import homePage.HomePage;
 import simulate.SimulateInterface;
 import function.Setting;
 import fishStore.FishStore;
 
-public class Test{
+public class Test extends JFrame implements WindowListener{
+	private DataBaseManager db = new DataBaseManager();
 	Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-	JFrame frame = new JFrame();
-	JPanel homePage = new HomePage(frame);
+	JFrame jFrame = this;
+	JPanel homePage = new HomePage(this);
 	JPanel instructionHome = new Instruction(new Color(61, 89, 171),Color.WHITE, SwingConstants.VERTICAL);
 	JPanel instructionSim = new Instruction(new Color(61, 89, 171),Color.WHITE, SwingConstants.VERTICAL);
-	SimulateInterface simulateInterface = new SimulateInterface(frame);
-	JPanel setting = new Setting(frame);
-	JPanel fishStore = new FishStore(frame,simulateInterface.getFish(),simulateInterface);
+	SimulateInterface simulateInterface = new SimulateInterface(this);
+	JPanel setting = new Setting(this, simulateInterface);
+	JPanel fishStore = new FishStore(this,simulateInterface.getFish(),simulateInterface);
 	
 	CardLayout cardLayout;
 	
-	Test(){
-		//Container c = frame.getContentPane();
-		frame.setLayout(new CardLayout());
-		frame.add(homePage, "homePage");
-		frame.add(instructionHome, "instructionHome");
-		frame.add(instructionSim, "instructionSim");
-		frame.add(simulateInterface, "simulateInterface");
-		frame.add(setting, "setting");
-		frame.add(fishStore, "fishStore");
+	public Test(){
+		//Container c = this.getContentPane();
+		this.addWindowListener(this);
+		this.setLayout(new CardLayout());
+		this.add(homePage, "homePage");
+		this.add(instructionHome, "instructionHome");
+		this.add(instructionSim, "instructionSim");
+		this.add(simulateInterface, "simulateInterface");
+		this.add(setting, "setting");
+		this.add(fishStore, "fishStore");
 		
-		cardLayout = (CardLayout) frame.getContentPane().getLayout();
+		cardLayout = (CardLayout) this.getContentPane().getLayout();
 		
-		action_setting();
+		actionSetting();
 		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(dimension.width,dimension.height);
-		frame.setVisible(true);
-		//frame.pack();
-		//frame.show();
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(dimension.width,dimension.height);
+		this.setVisible(true);
+		//this.pack();
+		this.show();
 	}
-	public void action_setting() {
+	public void homePageStartAction() {
 		//首頁Panel中的開始按鈕，點擊後，頁面會跳至模擬Panel
 		((HomePage) homePage).start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cardLayout.show(frame.getContentPane(), "simulateInterface");
+				db.deleteFishTable();
+				jFrame.remove(simulateInterface);
+				jFrame.remove(homePage);
+				jFrame.remove(instructionHome);
+				jFrame.remove(instructionSim);
+				jFrame.remove(setting);
+				jFrame.remove(fishStore);
+				homePage = new HomePage(jFrame);
+				instructionHome = new Instruction(new Color(61, 89, 171),Color.WHITE, SwingConstants.VERTICAL);
+				instructionSim = new Instruction(new Color(61, 89, 171),Color.WHITE, SwingConstants.VERTICAL);
+				simulateInterface = new SimulateInterface(jFrame);
+				setting = new Setting(jFrame, simulateInterface);
+				fishStore = new FishStore(jFrame,simulateInterface.getFish(),simulateInterface);
+
+				jFrame.add(homePage, "homePage");
+				jFrame.add(instructionHome, "instructionHome");
+				jFrame.add(instructionSim, "instructionSim");
+				jFrame.add(simulateInterface, "simulateInterface");
+				jFrame.add(setting, "setting");
+				jFrame.add(fishStore, "fishStore");
+				cardLayout = (CardLayout) jFrame.getContentPane().getLayout();
+				actionSetting();
+
+				cardLayout.show(jFrame.getContentPane(), "simulateInterface");
 			}
 		});
-		
+	}
+
+	public void homePageContinueAction() {
+
 		//首頁Panel中的繼續按鈕，點擊後，頁面會跳至模擬Panel，且繼續上次模擬狀態
 		((HomePage) homePage).continuee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cardLayout.show(frame.getContentPane(), "simulateInterface");
+				jFrame.remove(simulateInterface);
+				jFrame.remove(homePage);
+				jFrame.remove(instructionHome);
+				jFrame.remove(instructionSim);
+				jFrame.remove(setting);
+				jFrame.remove(fishStore);
+				homePage = new HomePage(jFrame);
+				instructionHome = new Instruction(new Color(61, 89, 171),Color.WHITE, SwingConstants.VERTICAL);
+				instructionSim = new Instruction(new Color(61, 89, 171),Color.WHITE, SwingConstants.VERTICAL);
+				
+				
+				simulateInterface = new SimulateInterface(jFrame);
+				simulateInterface.changeBackgroundInfo(db.selectBackgroundTable());
+				SimulateInterface temSI = new SimulateInterface();
+				temSI = db.selectButtonTable();
+				simulateInterface.setAutofeedCheck(temSI.isAutofeedCheck());
+				simulateInterface.setAutofeedTime(temSI.getAutofeedTime());
+				simulateInterface.setInflatorCheck(temSI.isFilterCheck());
+				simulateInterface.setChangeTemCheck(temSI.isChangeTemCheck());
+				simulateInterface.setTem(temSI.getTem());
+				simulateInterface.setFilterCheck(temSI.isFilterCheck());
+				simulateInterface.setSpeed(1000);
+				simulateInterface.setBackgroundInfo();
+				
+				simulateInterface.setFish(db.selectFishTable());
+				setting = new Setting(jFrame, simulateInterface);
+				fishStore = new FishStore(jFrame,simulateInterface.getFish(),simulateInterface);
+
+				jFrame.add(homePage, "homePage");
+				jFrame.add(instructionHome, "instructionHome");
+				jFrame.add(instructionSim, "instructionSim");
+				jFrame.add(simulateInterface, "simulateInterface");
+				jFrame.add(setting, "setting");
+				jFrame.add(fishStore, "fishStore");
+				cardLayout = (CardLayout) jFrame.getContentPane().getLayout();
+				actionSetting();
+				
+				cardLayout.show(jFrame.getContentPane(), "simulateInterface");
 			}
 		});
 		
+	}
+	public void actionSetting() {
+		homePageStartAction();
+		homePageContinueAction();
 		//首頁Panel中的說明按鈕，點擊後，頁面會跳至說明Panel
 		((HomePage) homePage).instruction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cardLayout.show(frame.getContentPane(), "instructionHome");
+				cardLayout.show(jFrame.getContentPane(), "instructionHome");
 			}
 		});
 		
 		//說明Panel中的X，點擊會回到首頁Panel
 		((Instruction) instructionHome).close.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cardLayout.previous(frame.getContentPane());
+				cardLayout.previous(jFrame.getContentPane());
 			}
 		});
 		//說明Panel中的return按鈕，點擊會回到首頁Panel
 		((Instruction) instructionHome).comeBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cardLayout.previous(frame.getContentPane());
+				cardLayout.previous(jFrame.getContentPane());
 			}
 		});
 		
 		//說明Panel中的X，點擊會回到模擬Panel
 		((Instruction) instructionSim).close.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cardLayout.next(frame.getContentPane());
+				cardLayout.next(jFrame.getContentPane());
 			}
 		});
 		//說明Panel中的return按鈕，點擊會回到模擬Panel
 		((Instruction) instructionSim).comeBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cardLayout.next(frame.getContentPane());
+				cardLayout.next(jFrame.getContentPane());
 			}
 		});
 		
 		//模擬Panel中的設定按鈕，點擊後頁面跳至設定Panel
 		((SimulateInterface) simulateInterface).set.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cardLayout.show(frame.getContentPane(), "setting");
+				cardLayout.show(jFrame.getContentPane(), "setting");
 			}
 		});
 		
 		//模擬Panel中的魚店按鈕，點擊後頁面跳至魚店Panel
 		((SimulateInterface) simulateInterface).fishStore.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cardLayout.show(frame.getContentPane(), "fishStore");
+				cardLayout.show(jFrame.getContentPane(), "fishStore");
 			}
 		});
 		
 		//模擬Panel中的說明按鈕，點擊後，頁面會跳至說明Panel
 		((SimulateInterface) simulateInterface).instruction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cardLayout.show(frame.getContentPane(), "instructionSim");
+				cardLayout.show(jFrame.getContentPane(), "instructionSim");
 			}
 		});
 		
 		//說明Panel中的返回按鈕，點擊後，頁面回到模擬Panel
 		((Setting) setting).back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cardLayout.show(frame.getContentPane(), "simulateInterface");
+				cardLayout.show(jFrame.getContentPane(), "simulateInterface");
 			}
 		});
+		
 		
 		//說明Panel中的首頁按鈕，點擊後，頁面跳至首頁Panel
 		((Setting) setting).homepage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cardLayout.show(frame.getContentPane(), "homePage");
+				db.deleteBackgroundTable();
+				db.deleteButtonTable();
+				for(int i = 0;i<simulateInterface.getFish().size();i++){
+					db.updateFishTable(simulateInterface.getFish().get(i).getFish());
+				}
+				db.insertBackgroundTable(simulateInterface.getB());
+				db.insertButtonTable(simulateInterface);
+				cardLayout.show(jFrame.getContentPane(), "homePage");
 			}
 		});
-		
+
 		//說明Panel中的返回按鈕，點擊後，頁面跳至模擬Panel
 		((FishStore) fishStore).back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cardLayout.show(frame.getContentPane(), "simulateInterface");
+				cardLayout.show(jFrame.getContentPane(), "simulateInterface");
 			}
 		});
 	}
 	public static void main(String[] args) {
 		new Test();
-	}	
+	}
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO 自動產生的方法 Stub
+		
+	}
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO 自動產生的方法 Stub
+		
+	}
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO 自動產生的方法 Stub
+
+		db.deleteBackgroundTable();
+		db.deleteButtonTable();
+		for(int i = 0;i<simulateInterface.getFish().size();i++){
+			db.updateFishTable(simulateInterface.getFish().get(i).getFish());
+		}
+		db.insertBackgroundTable(simulateInterface.getB());
+		db.insertButtonTable(simulateInterface);
+		System.out.println("windowClosing");
+        this.dispose();
+	}
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO 自動產生的方法 Stub
+		
+	}
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO 自動產生的方法 Stub
+		
+	}
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO 自動產生的方法 Stub
+		
+	}
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO 自動產生的方法 Stub
+		
+	}
 
 }
 

@@ -8,6 +8,9 @@ public class Background {
 	public static final double DEFAULT_PH	= 7;
 	public static final double DEFAULT_CLEANLINESS = 90;
 	public static final double DEFAULT_OXYGENCONTENT = 8;
+	private static final double BACKGROUND_MAX_PH = 14.0; // 環境的最高pH值
+	private static final double BACKGROUND_MAX_CLEANLINESS = 100.0; // 環境的最高pH值
+	private static final double BACKGROUND_MAX_OXYGENCONTENT = 100.0; // 環境的最高含氧量
 	
 	private double temperature;
 	private double pHValue;
@@ -21,7 +24,22 @@ public class Background {
 	private int second=0;
 //	private int speed = 1000;
 	private Season season;
+	private long endTime;
 	
+	public long getNowTime() {
+		Date nowTime = new Date();
+		return nowTime.getTime();
+	}
+	
+	public long getEndTime()
+	{
+		return endTime;
+	}
+
+	public void setEndTime(long endTime) {
+		this.endTime = endTime;
+	}
+
 	public Background()
 	{
 		setDefaultBackground();
@@ -131,16 +149,28 @@ public class Background {
 	public void changepHValue(double var)
 	{
 		pHValue += var;
+		if (pHValue > BACKGROUND_MAX_PH)
+			pHValue = BACKGROUND_MAX_PH;
+		else if (pHValue < 0)
+			pHValue = 0;
 	}
 	
 	public void changeOxygenContent(double var)
 	{
 		oxygenContent += var;
+		if (oxygenContent > BACKGROUND_MAX_OXYGENCONTENT)
+			oxygenContent = BACKGROUND_MAX_OXYGENCONTENT;
+		else if (oxygenContent < 0)
+			oxygenContent = 0;
 	}
 	
 	public void changeCleanliness(double var)
 	{
 		cleanliness += var;
+		if (cleanliness > BACKGROUND_MAX_CLEANLINESS)
+			cleanliness = BACKGROUND_MAX_CLEANLINESS;
+		else if (cleanliness < 0)
+			cleanliness = 0;
 	}
 	
 	public void setMaxOxygenContent()
@@ -160,5 +190,14 @@ public class Background {
 	public String toString(){
 		return String.format("溫度:%.1f°C pH值:%.1f 含氧量:%.1fPPM 乾淨度:%.1f%c  季節:%s 日期:%tF%n 時間:%tT%n ",
 				getTemperature(),getpHValue(),getOxygenContent(),getCleanliness(),37,season.getName(),getDate(),getTime());
+	}
+
+	public void setDate(long long1) {
+		date.setTime(long1);
+	}
+
+	public void setTime(long long1) {
+		date.setTime(long1);
+		
 	}
 }

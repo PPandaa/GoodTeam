@@ -11,24 +11,28 @@ import java.util.Timer;
 
 import javax.swing.*;
 
+import database.DataBaseManager;
 import background.Background;
+import fish.Fish;
 import fish.FishButton;
 import function.BackgroundManager;
 import function.FishManager;
 
 public class SimulateInterface extends JPanel{
 	private ArrayList<FishButton> fishButtons = new ArrayList<FishButton>();//fish
-	
+	Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	private DataBaseManager db = new DataBaseManager();
 	private Background background;
 	private BackgroundTask backgroundTask;
 	private BackgroundManager backgroundManager;
 	private FishManager fishManager;
-	
 	public JButton set;
 	public JButton fishStore;
 	public JButton instruction;
 	private JButton autofeed;
 	private JButton changeTem;
+	private JButton inflator;
+	private JButton filter;
 	private JPanel buttonSet;
 	
 	private JTextField temText ;
@@ -48,6 +52,30 @@ public class SimulateInterface extends JPanel{
 	private ImageIcon autofeedIcon;
 	private ImageIcon newAutofeedIcon;
 	
+	public boolean isInflatorCheck() {
+		return inflatorCheck;
+	}
+	public void setInflatorCheck(boolean inflatorCheck) {
+		this.inflatorCheck = inflatorCheck;
+	}
+	public boolean isFilterCheck() {
+		return filterCheck;
+	}
+	public void setFilterCheck(boolean filterCheck) {
+		this.filterCheck = filterCheck;
+	}
+	public boolean isChangeTemCheck() {
+		return changeTemCheck;
+	}
+	public void setChangeTemCheck(boolean changeTemCheck) {
+		this.changeTemCheck = changeTemCheck;
+	}
+	public boolean isAutofeedCheck() {
+		return autofeedCheck;
+	}
+	public void setAutofeedCheck(boolean autofeedCheck) {
+		this.autofeedCheck = autofeedCheck;
+	}
 	private boolean inflatorCheck = false;//判斷該打氣機是否已經點擊
 	private boolean filterCheck = false;//判斷過濾機是否已經點擊
 	private boolean changeTemCheck = false;//判斷調溫器是否已經點擊
@@ -63,7 +91,9 @@ public class SimulateInterface extends JPanel{
 	Random random = new Random();
 	
 	private Timer timer;
-
+	public SimulateInterface(){
+		
+	}
 	public SimulateInterface(JFrame frame)
 	{
 		tem = 20;//初始調溫器時的溫度，因為如果還沒有選擇comboBox裡的任一item，則會讀不到值
@@ -96,6 +126,7 @@ public class SimulateInterface extends JPanel{
         
         timer = new Timer();
 		timer.schedule(backgroundTask, new Date(), 100);
+		
 		
 		temText.setFont(new Font("",Font.BOLD,45));
 		temText.setBorder(null);//不繪製按鈕的邊
@@ -213,9 +244,10 @@ public class SimulateInterface extends JPanel{
 		feedIcon = new ImageIcon(getClass().getResource("餵食-2.PNG"));
 		feedIcon.setImage(feedIcon.getImage().getScaledInstance(125,75,Image.SCALE_DEFAULT));
 		feed.setRolloverIcon(feedIcon);
-		feed.addMouseListener(new MouseAdapter() {
+		feed.addActionListener(new ActionListener() {
+
 			@Override
-			public void mouseClicked(MouseEvent event) {
+			public void actionPerformed(ActionEvent e) {
 				fishManager.feed();
 			}
 		});
@@ -242,18 +274,12 @@ public class SimulateInterface extends JPanel{
 				}
 			}
 		);
-		autofeed.addMouseListener(new MouseAdapter() {
+		autofeed.addActionListener(new ActionListener() {
+
 			@Override
-			public void mouseClicked(MouseEvent event) {
+			public void actionPerformed(ActionEvent arg0) {
 				fishManager.pressAutoFeedBtn(autofeedTime);
-				if(autofeedCheck) {
-					autofeed.setIcon(autofeedIcon);
-					autofeedCheck = false;
-				}
-				else {
-					autofeed.setIcon(newAutofeedIcon);
-					autofeedCheck = true;
-				}
+				setAutofeedCheck();
 			}
 		});
 		buttonSet.add(autofeedComboBox);
@@ -267,33 +293,25 @@ public class SimulateInterface extends JPanel{
 		changeWaterIcon.setImage(changeWaterIcon.getImage().getScaledInstance(100,55,Image.SCALE_DEFAULT));
 		changeWater.setFocusable(false);
 		changeWater.setRolloverIcon(changeWaterIcon);
-		changeWater.addMouseListener(new MouseAdapter() {
+		changeWater.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent event) {
+			public void actionPerformed(ActionEvent e) {
 				backgroundManager.changeWater();
 			}
 		});
 		buttonSet.add(changeWater);
 		
 		//打氣機
-		JButton inflator = new JButton(inflatorIcon);
+		inflator = new JButton(inflatorIcon);
 		inflator.setBorder(null);//不繪製按鈕的邊
 		inflator.setContentAreaFilled(false);//不會自行繪製按鈕背景
 		inflator.setFocusable(false);
 		inflator.setRolloverIcon(newInflatorIcon);
-		inflator.addMouseListener(new MouseAdapter() {
+		inflator.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent event) {
-				
+			public void actionPerformed(ActionEvent e) {
 				backgroundManager.pressInflatorBtn();
-				if(inflatorCheck) {
-					inflator.setIcon(inflatorIcon);
-					inflatorCheck = false;
-				}
-				else {
-					inflator.setIcon(newInflatorIcon);
-					inflatorCheck = true;
-				}
+				setInflatorCheck();
 			}
 		});
 		buttonSet.add(inflator);
@@ -319,42 +337,27 @@ public class SimulateInterface extends JPanel{
 			}
 		);
 		
-		changeTem.addMouseListener(new MouseAdapter() {
+		changeTem.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent event) {
+			public void actionPerformed(ActionEvent e) {
 				backgroundManager.pressThermostatBtn(tem);
-				if(changeTemCheck) {
-					changeTem.setIcon(changeTemIcon);
-					changeTemCheck = false;
-				}
-				else {
-					changeTem.setIcon(newChangeTemIcon);
-					changeTemCheck = true;
-				}
+				setChangeTemCheck();
 			}
 		});
 		buttonSet.add(changeTem);
 		buttonSet.add(temComboBox);
 		
 		//過濾機
-		JButton filter = new JButton(filterIcon);
+		filter = new JButton(filterIcon);
 		filter.setBorder(null);//不繪製按鈕的邊
 		filter.setContentAreaFilled(false);//不會自行繪製按鈕背景
 		filter.setFocusable(false);
 		filter.setRolloverIcon(newFilterIcon);
-		filter.addMouseListener(new MouseAdapter() {
+		filter.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent event) {
+			public void actionPerformed(ActionEvent e) {
 				backgroundManager.pressFilter();
-				filter.setIcon(filterIcon);
-				if(filterCheck) {
-					filter.setIcon(filterIcon);
-					filterCheck = false;
-				}
-				else {
-					filter.setIcon(newFilterIcon);
-					filterCheck = true;
-				}
+				setFilterCheck();
 			}
 		});
 		buttonSet.add(filter);
@@ -381,12 +384,40 @@ public class SimulateInterface extends JPanel{
 	public ArrayList<FishButton> getFish() {
 		return fishButtons;
 	}
+	
+	public void setFish(ArrayList<Fish> fishes)
+	{
+		db.deleteFishTable();
+		for(int i = 0; i < fishes.size(); i++)
+		{
+			FishButton fishButton = new FishButton(fishes.get(i));
+			add(fishButton);
+			fishButtons.add(fishButton);
+		}
+		
+	}
+	
 	//將魚的Button加入模擬介面
 	public void addFishToInterFace() {
 		for(FishButton fishButton:fishButtons) {
 			add(fishButton);
 		}
-		
+	}
+	
+	public void removeFish()
+	{
+		for (int i = 0; i < fishButtons.size(); i++)
+		{
+			if(fishButtons.get(i).btnX >=1300 && fishButtons.get(i).btnX <=1500 
+					&& fishButtons.get(i).btnY >=100 && fishButtons.get(i).btnY <=170 
+					)
+			{
+				db.deleteFishTable(fishButtons.get(i).getFish().getName());
+				this.remove(fishButtons.get(i));
+				fishButtons.remove(i);
+				repaint();
+			}
+		}
 	}
 	//設定背景參數
 	public void setBackgroundInfo()
@@ -399,4 +430,79 @@ public class SimulateInterface extends JPanel{
 		dateText.setText(String.format("日期:%tF%n", background.getDate()));
 		timeText.setText(String.format("時間:%tT%n", background.getTime()));
 	}
+	
+	public void changeBackgroundInfo(Background background)
+	{
+		this.background = background;
+		long changeTime = (this.background.getNowTime() - this.background.getEndTime()) / 1000;
+		
+		for (long i = 0; i < changeTime; i++)
+			backgroundTask.growingInfo((int)i);
+	}
+	public int getTem() {
+		return tem;
+	}
+	public void setTem(int tem) {
+		this.tem = tem;
+	}
+	public int getAutofeedTime() {
+		return autofeedTime;
+	}
+	public void setAutofeedTime(int autofeedTime) {
+		this.autofeedTime = autofeedTime;
+	}
+	//設定速度
+	public void setSpeed(int speed)
+	{
+		Date date = background.getDate();
+		backgroundTask.cancel();
+		backgroundTask = new BackgroundTask(background, fishManager, backgroundManager, this, date);
+		timer = new Timer();
+		timer.schedule(backgroundTask,new Date(),speed);
+	}
+	public Background getB(){
+		return background;
+	}
+
+	public void setInflatorCheck(){
+		if(inflatorCheck) {
+			inflator.setIcon(inflatorIcon);
+			inflatorCheck = false;
+		}
+		else {
+			inflator.setIcon(newInflatorIcon);
+			inflatorCheck = true;
+		}
+	}
+	public void setFilterCheck(){
+		if(filterCheck) {
+			filter.setIcon(filterIcon);
+			filterCheck = false;
+		}
+		else {
+			filter.setIcon(newFilterIcon);
+			filterCheck = true;
+		}
+	}
+	public void setChangeTemCheck(){
+		if(changeTemCheck) {
+			changeTem.setIcon(changeTemIcon);
+			changeTemCheck = false;
+		}
+		else {
+			changeTem.setIcon(newChangeTemIcon);
+			changeTemCheck = true;
+		}
+	}
+	public void setAutofeedCheck(){
+		if(autofeedCheck) {
+			autofeed.setIcon(autofeedIcon);
+			autofeedCheck = false;
+		}
+		else {
+			autofeed.setIcon(newAutofeedIcon);
+			autofeedCheck = true;
+		}
+	}
+	
 }

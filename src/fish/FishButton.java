@@ -30,20 +30,38 @@ public class FishButton extends JButton{
     
     private ImageIcon deadFishIcon;
 	
+    public FishButton(Fish fish)
+    {
+    	this.fish = fish;
+    	this.fish.setPartInitFishInfo();
+		setFishButton();
+    }
+    
 	public FishButton(String name,String category,String gender,String age,SimulateInterface SI) {
 		
 		fish = new Fish(name,category,gender,age);
-
-		xLength = 150+random.nextInt(50);
-		yLength = 150+random.nextInt(50);
+		setFishButton();
+//		xLength = 150+random.nextInt(50);
+//		yLength = 150+random.nextInt(50);
+	}
+	//取得Fish物件，用來呼叫Fish裡的method
+	public Fish getFish()
+	{
+		return fish;
+	}
+	
+	public void setFishButton()
+	{
+		xLength = 150 + (int)fish.getLength()*10;
+		yLength = 150 + (int)fish.getLength()*10;
 		btnX = random.nextInt(1200);
         btnY = 150+random.nextInt(500);
         vx = Math.sin(1) * 5;
         vy = Math.cos(1) * 5;
         
-        ImageIcon fishIcon = new ImageIcon(getClass().getResource(category+".PNG"));
+        ImageIcon fishIcon = new ImageIcon(getClass().getResource(fish.getCategory()+".PNG"));
 		fishIcon.setImage(fishIcon.getImage().getScaledInstance(xLength,yLength,Image.SCALE_DEFAULT));
-		deadFishIcon = new ImageIcon(getClass().getResource("死"+category+".PNG"));
+		deadFishIcon = new ImageIcon(getClass().getResource("死"+fish.getCategory()+".PNG"));
 		deadFishIcon.setImage(deadFishIcon.getImage().getScaledInstance(xLength,yLength,Image.SCALE_DEFAULT));
 		setIcon(fishIcon);
 		this.setBorder(null);//不繪製按鈕的邊
@@ -110,11 +128,6 @@ public class FishButton extends JButton{
 
     	RB = new RunningButton();
         timer.schedule(RB, 1000, 200);
-	}
-	//取得Fish物件，用來呼叫Fish裡的method
-	public Fish getFish()
-	{
-		return fish;
 	}
 
 	//fish隨著時間移動位置

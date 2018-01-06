@@ -6,12 +6,14 @@ import function.FishManager;
 
 public class BackgroundManager
 {
-	private static final double SEASON_APPROACHING_TEMPERATURE = 0.00167; 			// (溫度) 隨 (季節) 的趨近速度 //每分鐘0.1
+	private static final double SEASON_APPROACHING_TEMPERATURE = 0.00167; 		// (溫度) 隨 (季節) 的趨近速度 //每分鐘0.1
 	private static final double THERMOSTAT_APPROACHING_TEMPERATURE = 0.001; 	// (溫度) 隨 (調溫器) 的趨近速度 //每秒鐘0.001
 	private static final double INFLATOR_APPROACHING_OXYGENCONTENT = 0.000056; 	// (含氧量) 隨 (打氣機) 的上升速度 //每小時0.2
 	private static final double FISHNUM_APPROACHING_OXYGENCONTENT = -0.0000033;	// (含氧量) 隨 (魚數量) 的下降速度 //每小時0.012
-	private static final double PUMP_APPROACHING_CLEANLINESS = 0.01; 			// (乾淨度) 隨 (過濾機) 的上升速度 //每秒鐘0.01
-	private static final double PUMP_APPROACHING_PH = 0.01; 					// (pH) 隨 (過濾機) 的趨近速度 //每秒鐘0.01
+	private static final double PUMP_APPROACHING_CLEANLINESS = 0.001; 			// (乾淨度) 隨 (過濾機) 的上升速度 //每秒鐘0.001
+	private static final double DEADFISH_APPROACHING_CLEANLINESS = -0.001; 		// (乾淨度) 隨 (死魚) 的上升速度 //每秒鐘0.001
+	private static final double PUMP_APPROACHING_PH = 0.001; 					// (pH) 隨 (過濾機) 的趨近速度 //每秒鐘0.001
+	private static final double DEADFISH_APPROACHING_PH = -0.0001; 				// (pH) 隨 (過濾機) 的趨近速度 //每秒鐘0.0001
 	private static final double PUMP_MAX_CLEANLINESS = 90; // 過濾機的最高乾淨度
 	private static final double PUMP_MAX_PH = 7.0; // 過濾機的標準pH值
 	private Background background;
@@ -99,22 +101,19 @@ public class BackgroundManager
 	 */
 	public void growingTemperature(int sec)
 	{
-		if (sec % 1 == 0)
+		if (thermostatBtn)
 		{
-			if (thermostatBtn)
-			{
-				//溫度以0.001趨近於調溫器溫度
-				background.changeTemperature(approachToSpecificNum(THERMOSTAT_APPROACHING_TEMPERATURE,
-																	background.getTemperature(),
-																	thermostatTemperature));
-			}
-			else
-			{
-				//溫度以0.06趨近於季節溫度
-				background.changeTemperature(approachToSpecificNum(SEASON_APPROACHING_TEMPERATURE,
-																	background.getTemperature(),
-																	background.getSeason().getTem()));
-			}
+			//溫度以0.001趨近於調溫器溫度
+			background.changeTemperature(approachToSpecificNum(THERMOSTAT_APPROACHING_TEMPERATURE,
+																background.getTemperature(),
+																thermostatTemperature));
+		}
+		else
+		{
+			//溫度以0.06趨近於季節溫度
+			background.changeTemperature(approachToSpecificNum(SEASON_APPROACHING_TEMPERATURE,
+																background.getTemperature(),
+																background.getSeason().getTem()));
 		}
 	}
 
@@ -124,20 +123,23 @@ public class BackgroundManager
 	 */
 	public void growingpH(int sec)	//因為pHValue不會因時間而改變數值，因此將按鈕條件寫在外面直接判斷
 	{
+		
+		double var = fishManager.getDeadFishNum() * DEADFISH_APPROACHING_PH;
 		if (filterBtn)
 		{
+			var += PUMP_APPROACHING_PH;
 			//每秒趨近0.01
-			if (sec % 1 == 0)
-			{
-				background.changepHValue(approachToSpecificNum(PUMP_APPROACHING_PH,
-																background.getpHValue(),
-																PUMP_MAX_PH));
-			}
+			
+			background.changepHValue(approachToSpecificNum(var,
+															background.getpHValue(),
+															PUMP_MAX_PH));
+			
 		}
+		background.changepHValue(var);
 	}
 	//---------------------------------------------------------------------------------
 	/**
-	 * 含氧量：隨時間每小時下降0.012，若魚的數量為n，則速率為0.02*n。
+	 * 含氧量：隨時間每小時下降0.012，若魚的數量為n，則速率為0.012*n。
 	 * 打氣：依溫度決定含氧量上升到最大值如下，速度為每小時+0.2ppm。
 	 * 最大含氧量：0-10度：11ppm  ,  11-20：9ppm  ,  21-30：7ppm  ,  31-40：6ppm
 	 * @param sec
@@ -168,15 +170,16 @@ public class BackgroundManager
 	 */
 	public void growingCleanliness(int sec)
 	{
+		double var = fishManager.getDeadFishNum() * DEADFISH_APPROACHING_CLEANLINESS;
 		if (filterBtn)
 		{
-			if (sec % 1 == 0)
-			{
-				background.changeCleanliness(approachToSpecificNum(PUMP_APPROACHING_CLEANLINESS,
+			var += PUMP_APPROACHING_CLEANLINESS;
+			background.changeCleanliness(approachToSpecificNum(PUMP_APPROACHING_CLEANLINESS,
 																	background.getCleanliness(),
 																	PUMP_MAX_CLEANLINESS));
-			}
 		}
+		else 
+			background.changeCleanliness(var);
 	}
 
 	/**

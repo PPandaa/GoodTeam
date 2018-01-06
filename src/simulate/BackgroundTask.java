@@ -29,6 +29,7 @@ public class BackgroundTask extends TimerTask {
 		this.background = background;
 		this.backgroundManager = backgroundManager;
 		this.fishManager = fishManager;
+		this.SI = SI;
 		this.date = date;
 	}
 	@Override
@@ -38,6 +39,20 @@ public class BackgroundTask extends TimerTask {
 		//backgroundManager.display();
 		//fishManager.printFishes();
 		
+		growingInfo(sec);
+		
+		SI.setBackgroundInfo();
+		SI.removeFish();
+		//時間改變
+		long time = date.getTime() + perSecond;
+		date.setTime(time);
+		background.setDate(date);
+		background.setTime(date); 
+		background.setSecond(++sec) ; 
+	}
+	
+	public void growingInfo(int sec)
+	{
 		//背景資訊改變
 		backgroundManager.growingCleanliness(sec);
 		backgroundManager.growingOxygenContent(sec);
@@ -53,14 +68,9 @@ public class BackgroundTask extends TimerTask {
 			fishManager.growingExcretion(sec);
 			fishManager.growingLife(sec);
 			fishManager.autoFeed(sec);
+			fishManager.check(sec);
+			fishManager.conflict(sec);
+			fishManager.delete(sec);
 		}
-		SI.setBackgroundInfo();
-		
-		//時間改變
-		long time = date.getTime() + perSecond;
-		date.setTime(time);
-		background.setDate(date);
-		background.setTime(date); 
-		background.setSecond(++sec) ; 
 	}
 }
