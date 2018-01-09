@@ -125,7 +125,7 @@ public class SimulateInterface extends JPanel{
         backgroundTask = new BackgroundTask(background, fishManager, backgroundManager, this);
         
         timer = new Timer();
-		timer.schedule(backgroundTask, new Date(), 100);
+		timer.schedule(backgroundTask, new Date(), 1000);
 		
 		
 		temText.setFont(new Font("",Font.BOLD,45));

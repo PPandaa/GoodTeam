@@ -14,7 +14,7 @@ public class BackgroundManager
 	private static final double PUMP_APPROACHING_CLEANLINESS = 0.001; 			// (乾淨度) 隨 (過濾機) 的上升速度 //每秒鐘0.001
 	private static final double DEADFISH_APPROACHING_CLEANLINESS = -0.001; 		// (乾淨度) 隨 (死魚) 的上升速度 //每秒鐘0.001
 	private static final double PUMP_APPROACHING_PH = 0.001; 					// (pH) 隨 (過濾機) 的趨近速度 //每秒鐘0.001
-	private static final double DEADFISH_APPROACHING_PH = -0.0001; 				// (pH) 隨 (過濾機) 的趨近速度 //每秒鐘0.0001
+	private static final double DEADFISH_APPROACHING_PH = -0.0001; 				// (pH) 隨 (死魚) 的趨近速度 //每秒鐘0.0001
 	private static final double PUMP_MAX_CLEANLINESS = 90; // 過濾機的最高乾淨度
 	private static final double PUMP_MAX_PH = 7.0; // 過濾機的標準pH值
 	private Background background;

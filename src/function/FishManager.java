@@ -92,14 +92,7 @@ public class FishManager
 	{
 		if (autoFeedBtn)
 		{
-//			for (int i = 0; i < fishes.size(); i++)
-//			{
-//				if (fishes.get(i).getSatiation() < SimulateInterface.LOW_SATIATION)
-//				{
-//					feed();
-//					break;
-//				}
-//			}
+
 			if (sec % autoFeedTime == 0)
 			{
 				

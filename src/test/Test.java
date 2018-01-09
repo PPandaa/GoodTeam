@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
+import java.util.Timer;
 import javax.swing.*;
 
 import database.DataBaseManager;
@@ -14,6 +14,7 @@ import homePage.HomePage;
 import simulate.SimulateInterface;
 import function.Setting;
 import fishStore.FishStore;
+import function.mp3Task;
 
 public class Test extends JFrame implements WindowListener{
 	private DataBaseManager db = new DataBaseManager();
@@ -216,6 +217,8 @@ public class Test extends JFrame implements WindowListener{
 		});
 	}
 	public static void main(String[] args) {
+		Timer timer = new Timer();
+	    timer.schedule(new mp3Task(), 1000, 10);
 		new Test();
 	}
 	@Override
