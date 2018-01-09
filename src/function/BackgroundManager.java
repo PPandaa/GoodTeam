@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 import background.Background;
 import function.FishManager;
+import simulate.SimulateInterface;
 
 public class BackgroundManager
 {
@@ -41,17 +42,18 @@ public class BackgroundManager
 	/**
 	 * 按下打氣機按鈕
 	 */
+	public void setInflatorBtn(boolean inflatorBtn) {
+		this.inflatorBtn = inflatorBtn;
+	}
 	public void pressInflatorBtn()
 	{
 		if (inflatorBtn)
 		{
 			inflatorBtn = false;
-			System.out.println("打氣機關閉");
 		}
 		else
 		{
 			inflatorBtn = true;
-			System.out.println("打氣機開啟");
 		}
 	}
 
@@ -59,19 +61,18 @@ public class BackgroundManager
 	 * 按下調溫器按鈕
 	 * 開啟後需輸入溫度
 	 */
+	public void setThermostatBtn(boolean thermostatBtn) {
+		this.thermostatBtn = thermostatBtn;
+	}
 	public void pressThermostatBtn(int temperature)
 	{
 		if (thermostatBtn)
 		{
 			thermostatBtn = false;
-//			System.out.println("調溫器關閉");
 		}
 		else
 		{
 			thermostatBtn = true;
-//			System.out.println("調溫器開啟");
-//			System.out.println("設定溫度：");
-//			Scanner scanner = new Scanner(System.in);
 			thermostatTemperature = temperature;
 		}
 	}
@@ -79,17 +80,18 @@ public class BackgroundManager
 	/**
 	 * 按下過濾機按鈕
 	 */
+	public void setFilterBtn(boolean filterBtn) {
+		this.filterBtn = filterBtn;
+	}
 	public void pressFilter()
 	{
 		if (filterBtn)
 		{
 			filterBtn = false;
-			System.out.println("幫浦關閉");
 		}
 		else
 		{
 			filterBtn = true;
-			System.out.println("幫浦開啟");
 		}
 	}
 
@@ -213,6 +215,23 @@ public class BackgroundManager
 		}
 		// 來源值等於趨近值->回傳0
 		else return 0;
+	}
+	
+	public void setButton(SimulateInterface SI)
+	{
+		if (SI.getFilterCheck())
+			pressFilter();
+		else
+			inflatorBtn = false;
+		
+		if (SI.getInflatorCheck())
+			pressInflatorBtn();
+		else
+			inflatorBtn = false;
+		if (SI.getChangeTemCheck())
+			pressThermostatBtn(SI.getTem());
+		else
+			thermostatBtn = false;
 	}
 
 	public void display()

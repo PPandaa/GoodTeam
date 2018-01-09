@@ -7,7 +7,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.*;
- 
+
 import database.DataBaseManager;
 import function.Instruction;
 import homePage.HomePage;
@@ -22,13 +22,9 @@ public class Test extends JFrame implements WindowListener{
 	JPanel homePage = new HomePage(this);
 	JPanel instructionHome = new Instruction(new Color(61, 89, 171),Color.WHITE, SwingConstants.VERTICAL);
 	JPanel instructionSim = new Instruction(new Color(61, 89, 171),Color.WHITE, SwingConstants.VERTICAL);
-
-	SimulateInterface simulateInterface1 = new SimulateInterface(this);
-	JPanel setting = new Setting(this, simulateInterface1);
-	JPanel fishStore = new FishStore(this,simulateInterface1.getFish(),simulateInterface1);
-
-
-
+	SimulateInterface simulateInterface = new SimulateInterface(this);
+	JPanel setting = new Setting(this, simulateInterface);
+	JPanel fishStore = new FishStore(this,simulateInterface.getFish(),simulateInterface);
 	
 	CardLayout cardLayout;
 	
@@ -39,7 +35,7 @@ public class Test extends JFrame implements WindowListener{
 		this.add(homePage, "homePage");
 		this.add(instructionHome, "instructionHome");
 		this.add(instructionSim, "instructionSim");
-		this.add(simulateInterface1, "simulateInterface");
+		this.add(simulateInterface, "simulateInterface");
 		this.add(setting, "setting");
 		this.add(fishStore, "fishStore");
 		
@@ -58,7 +54,7 @@ public class Test extends JFrame implements WindowListener{
 		((HomePage) homePage).start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				db.deleteFishTable();
-				jFrame.remove(simulateInterface1);
+				jFrame.remove(simulateInterface);
 				jFrame.remove(homePage);
 				jFrame.remove(instructionHome);
 				jFrame.remove(instructionSim);
@@ -67,14 +63,14 @@ public class Test extends JFrame implements WindowListener{
 				homePage = new HomePage(jFrame);
 				instructionHome = new Instruction(new Color(61, 89, 171),Color.WHITE, SwingConstants.VERTICAL);
 				instructionSim = new Instruction(new Color(61, 89, 171),Color.WHITE, SwingConstants.VERTICAL);
-				simulateInterface1 = new SimulateInterface(jFrame);
-				setting = new Setting(jFrame, simulateInterface1);
-				fishStore = new FishStore(jFrame,simulateInterface1.getFish(),simulateInterface1);
+				simulateInterface = new SimulateInterface(jFrame);
+				setting = new Setting(jFrame, simulateInterface);
+				fishStore = new FishStore(jFrame,simulateInterface.getFish(),simulateInterface);
 
 				jFrame.add(homePage, "homePage");
 				jFrame.add(instructionHome, "instructionHome");
 				jFrame.add(instructionSim, "instructionSim");
-				jFrame.add(simulateInterface1, "simulateInterface");
+				jFrame.add(simulateInterface, "simulateInterface");
 				jFrame.add(setting, "setting");
 				jFrame.add(fishStore, "fishStore");
 				cardLayout = (CardLayout) jFrame.getContentPane().getLayout();
@@ -90,7 +86,7 @@ public class Test extends JFrame implements WindowListener{
 		//首頁Panel中的繼續按鈕，點擊後，頁面會跳至模擬Panel，且繼續上次模擬狀態
 		((HomePage) homePage).continuee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				jFrame.remove(simulateInterface1);
+				jFrame.remove(simulateInterface);
 				jFrame.remove(homePage);
 				jFrame.remove(instructionHome);
 				jFrame.remove(instructionSim);
@@ -101,27 +97,28 @@ public class Test extends JFrame implements WindowListener{
 				instructionSim = new Instruction(new Color(61, 89, 171),Color.WHITE, SwingConstants.VERTICAL);
 				
 				
-				simulateInterface1 = new SimulateInterface(jFrame);
-				simulateInterface1.changeBackgroundInfo(db.selectBackgroundTable());
-				SimulateInterface temSI = new SimulateInterface();
-				temSI = db.selectButtonTable();
-				simulateInterface1.setAutofeedCheck(temSI.isAutofeedCheck());
-				simulateInterface1.setAutofeedTime(temSI.getAutofeedTime());
-				simulateInterface1.setInflatorCheck(temSI.isFilterCheck());
-				simulateInterface1.setChangeTemCheck(temSI.isChangeTemCheck());
-				simulateInterface1.setTem(temSI.getTem());
-				simulateInterface1.setFilterCheck(temSI.isFilterCheck());
-				simulateInterface1.setSpeed(1000);
-				simulateInterface1.setBackgroundInfo();
+				simulateInterface = new SimulateInterface(jFrame);
+				 db.selectButtonTable(simulateInterface);
+				 System.out.println(simulateInterface.isInflatorCheck());
+				simulateInterface.setInflatorCheck();
+				simulateInterface.setAutofeedCheck();
+				simulateInterface.setFilterCheck();
+				simulateInterface.setChangeTemCheck();
+				simulateInterface.autofeedComboBox.setSelectedIndex((simulateInterface.getAutofeedTime()/60)-1);
+				simulateInterface.temComboBox.setSelectedIndex(simulateInterface.getTem() % 20);
+				simulateInterface.repaint();
+				simulateInterface.setBackgroundInfo();
 				
-				simulateInterface1.setFish(db.selectFishTable());
-				setting = new Setting(jFrame, simulateInterface1);
-				fishStore = new FishStore(jFrame,simulateInterface1.getFish(),simulateInterface1);
+				simulateInterface.setFish(db.selectFishTable());
+				setting = new Setting(jFrame, simulateInterface);
+				fishStore = new FishStore(jFrame,simulateInterface.getFish(),simulateInterface);
+				simulateInterface.changeBackgroundInfo(db.selectBackgroundTable());
+				simulateInterface.setSpeed(1000);
 
 				jFrame.add(homePage, "homePage");
 				jFrame.add(instructionHome, "instructionHome");
 				jFrame.add(instructionSim, "instructionSim");
-				jFrame.add(simulateInterface1, "simulateInterface");
+				jFrame.add(simulateInterface, "simulateInterface");
 				jFrame.add(setting, "setting");
 				jFrame.add(fishStore, "fishStore");
 				cardLayout = (CardLayout) jFrame.getContentPane().getLayout();
@@ -169,21 +166,21 @@ public class Test extends JFrame implements WindowListener{
 		});
 		
 		//模擬Panel中的設定按鈕，點擊後頁面跳至設定Panel
-		((SimulateInterface) simulateInterface1).set.addActionListener(new ActionListener() {
+		((SimulateInterface) simulateInterface).set.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				cardLayout.show(jFrame.getContentPane(), "setting");
 			}
 		});
 		
 		//模擬Panel中的魚店按鈕，點擊後頁面跳至魚店Panel
-		((SimulateInterface) simulateInterface1).fishStore.addActionListener(new ActionListener() {
+		((SimulateInterface) simulateInterface).fishStore.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				cardLayout.show(jFrame.getContentPane(), "fishStore");
 			}
 		});
 		
 		//模擬Panel中的說明按鈕，點擊後，頁面會跳至說明Panel
-		((SimulateInterface) simulateInterface1).instruction.addActionListener(new ActionListener() {
+		((SimulateInterface) simulateInterface).instruction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				cardLayout.show(jFrame.getContentPane(), "instructionSim");
 			}
@@ -202,11 +199,11 @@ public class Test extends JFrame implements WindowListener{
 			public void actionPerformed(ActionEvent arg0) {
 				db.deleteBackgroundTable();
 				db.deleteButtonTable();
-				for(int i = 0;i<simulateInterface1.getFish().size();i++){
-					db.updateFishTable(simulateInterface1.getFish().get(i).getFish());
+				for(int i = 0;i<simulateInterface.getFish().size();i++){
+					db.updateFishTable(simulateInterface.getFish().get(i).getFish());
 				}
-				db.insertBackgroundTable(simulateInterface1.getB());
-				db.insertButtonTable(simulateInterface1);
+				db.insertBackgroundTable(simulateInterface.getB());
+				db.insertButtonTable(simulateInterface);
 				cardLayout.show(jFrame.getContentPane(), "homePage");
 			}
 		});
@@ -237,11 +234,11 @@ public class Test extends JFrame implements WindowListener{
 
 		db.deleteBackgroundTable();
 		db.deleteButtonTable();
-		for(int i = 0;i<simulateInterface1.getFish().size();i++){
-			db.updateFishTable(simulateInterface1.getFish().get(i).getFish());
+		for(int i = 0;i<simulateInterface.getFish().size();i++){
+			db.updateFishTable(simulateInterface.getFish().get(i).getFish());
 		}
-		db.insertBackgroundTable(simulateInterface1.getB());
-		db.insertButtonTable(simulateInterface1);
+		db.insertBackgroundTable(simulateInterface.getB());
+		db.insertButtonTable(simulateInterface);
 		System.out.println("windowClosing");
         this.dispose();
 	}
@@ -267,8 +264,3 @@ public class Test extends JFrame implements WindowListener{
 	}
 
 }
-
-
-
-/*HomePage HP = new HomePage();
-HP.run();*/

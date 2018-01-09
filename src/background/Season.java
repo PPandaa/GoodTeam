@@ -44,27 +44,23 @@ public class Season {
 		switch(month)
 		{
 		case 0:
-			//name = "冬";
 			setName("冬");
-			//tem = 15;
+			//tem = 15
 			setTem(15);
 			break;
 		case 1:
-			//name = "春";
 			setName("春");
-			//tem = 20;
+			//tem = 20
 			setTem(20);
 			break;
 		case 2:
-			//name = "夏";
 			setName("夏");
-			//tem = 25;
+			//tem = 25
 			setTem(25);
 			break;
 		case 3:
-			//name = "秋";
 			setName("秋");
-			//tem = 20;
+			//tem = 20
 			setTem(20);
 			break;
 		}

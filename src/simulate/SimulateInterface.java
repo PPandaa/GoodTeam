@@ -2,8 +2,6 @@ package simulate;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
@@ -33,6 +31,8 @@ public class SimulateInterface extends JPanel{
 	private JButton changeTem;
 	private JButton inflator;
 	private JButton filter;
+	public JComboBox autofeedComboBox;
+	public JComboBox temComboBox;
 	private JPanel buttonSet;
 	
 	private JTextField temText ;
@@ -125,7 +125,7 @@ public class SimulateInterface extends JPanel{
         backgroundTask = new BackgroundTask(background, fishManager, backgroundManager, this);
         
         timer = new Timer();
-		timer.schedule(backgroundTask, new Date(), 1000);
+		timer.schedule(backgroundTask, new Date(), 100);
 		
 		
 		temText.setFont(new Font("",Font.BOLD,45));
@@ -259,7 +259,7 @@ public class SimulateInterface extends JPanel{
 		autofeed.setContentAreaFilled(false);//不會自行繪製按鈕背景
 		autofeed.setFocusable(false);
 		autofeed.setRolloverIcon(newAutofeedIcon);
-		JComboBox autofeedComboBox = new JComboBox(autofeedTimeList) ;
+		autofeedComboBox = new JComboBox(autofeedTimeList) ;
 		autofeedComboBox.setFont(new Font("標楷體", Font.BOLD, 30));
 		autofeedComboBox.setBackground(Color.lightGray);
 		autofeedComboBox.setMaximumRowCount(3);
@@ -272,6 +272,7 @@ public class SimulateInterface extends JPanel{
 								[autofeedComboBox.getSelectedIndex()].split(":")[0]);
 					}
 				}
+				
 			}
 		);
 		autofeed.addActionListener(new ActionListener() {
@@ -279,7 +280,14 @@ public class SimulateInterface extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				fishManager.pressAutoFeedBtn(autofeedTime);
-				setAutofeedCheck();
+				if(autofeedCheck) {
+					autofeed.setIcon(autofeedIcon);
+					autofeedCheck = false;
+				}
+				else {
+					autofeed.setIcon(newAutofeedIcon);
+					autofeedCheck = true;
+				}
 			}
 		});
 		buttonSet.add(autofeedComboBox);
@@ -311,7 +319,14 @@ public class SimulateInterface extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				backgroundManager.pressInflatorBtn();
-				setInflatorCheck();
+				if(inflatorCheck) {
+					inflator.setIcon(inflatorIcon);
+					inflatorCheck = false;
+				}
+				else {
+					inflator.setIcon(newInflatorIcon);
+					inflatorCheck = true;
+				}
 			}
 		});
 		buttonSet.add(inflator);
@@ -322,7 +337,7 @@ public class SimulateInterface extends JPanel{
 		changeTem.setContentAreaFilled(false);//不會自行繪製按鈕背景
 		changeTem.setFocusable(false);
 		changeTem.setRolloverIcon(newChangeTemIcon);
-		JComboBox temComboBox = new JComboBox(tempList) ;
+		temComboBox = new JComboBox(tempList) ;
 		temComboBox.setFont(new Font("標楷體", Font.BOLD, 30));
 		temComboBox.setBackground(Color.lightGray);
 		temComboBox.setMaximumRowCount(3);
@@ -341,7 +356,14 @@ public class SimulateInterface extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				backgroundManager.pressThermostatBtn(tem);
-				setChangeTemCheck();
+				if(changeTemCheck) {
+					changeTem.setIcon(changeTemIcon);
+					changeTemCheck = false;
+				}
+				else {
+					changeTem.setIcon(newChangeTemIcon);
+					changeTemCheck = true;
+				}
 			}
 		});
 		buttonSet.add(changeTem);
@@ -357,7 +379,14 @@ public class SimulateInterface extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				backgroundManager.pressFilter();
-				setFilterCheck();
+				if(filterCheck) {
+					filter.setIcon(filterIcon);
+					filterCheck = false;
+				}
+				else {
+					filter.setIcon(newFilterIcon);
+					filterCheck = true;
+				}
 			}
 		});
 		buttonSet.add(filter);
@@ -408,8 +437,8 @@ public class SimulateInterface extends JPanel{
 	{
 		for (int i = 0; i < fishButtons.size(); i++)
 		{
-			if(fishButtons.get(i).btnX >=1300 && fishButtons.get(i).btnX <=1500 
-					&& fishButtons.get(i).btnY >=100 && fishButtons.get(i).btnY <=170 
+			if(fishButtons.get(i).btnX >=1280 && fishButtons.get(i).btnX <=1500 
+					&& fishButtons.get(i).btnY >=80 && fishButtons.get(i).btnY <=170 
 					)
 			{
 				db.deleteFishTable(fishButtons.get(i).getFish().getName());
@@ -434,6 +463,11 @@ public class SimulateInterface extends JPanel{
 	public void changeBackgroundInfo(Background background)
 	{
 		this.background = background;
+		fishManager = new FishManager(fishButtons, background);
+		fishManager.setButton(this);
+		backgroundManager = new BackgroundManager(background, fishManager);
+		backgroundManager.setButton(this);
+        backgroundTask = new BackgroundTask(background, fishManager, backgroundManager, this);
 		long changeTime = (this.background.getNowTime() - this.background.getEndTime()) / 1000;
 		
 		for (long i = 0; i < changeTime; i++)
@@ -460,49 +494,81 @@ public class SimulateInterface extends JPanel{
 		timer = new Timer();
 		timer.schedule(backgroundTask,new Date(),speed);
 	}
+	
+	public void cancelSpeed()
+	{
+		backgroundTask.cancel();
+	}
 	public Background getB(){
 		return background;
 	}
 
 	public void setInflatorCheck(){
 		if(inflatorCheck) {
-			inflator.setIcon(inflatorIcon);
-			inflatorCheck = false;
+			inflator.setIcon(newInflatorIcon);
+			backgroundManager.setInflatorBtn(true);
+			inflatorCheck = true;
 		}
 		else {
-			inflator.setIcon(newInflatorIcon);
-			inflatorCheck = true;
+			inflator.setIcon(inflatorIcon);
+			backgroundManager.setInflatorBtn(false);
+			inflatorCheck = false;
 		}
 	}
 	public void setFilterCheck(){
 		if(filterCheck) {
-			filter.setIcon(filterIcon);
-			filterCheck = false;
+			filter.setIcon(newFilterIcon);
+			backgroundManager.setFilterBtn(true);
+			filterCheck = true;
 		}
 		else {
-			filter.setIcon(newFilterIcon);
-			filterCheck = true;
+			filter.setIcon(filterIcon);
+			backgroundManager.setFilterBtn(false);
+			filterCheck = false;
 		}
 	}
 	public void setChangeTemCheck(){
 		if(changeTemCheck) {
-			changeTem.setIcon(changeTemIcon);
-			changeTemCheck = false;
+			changeTem.setIcon(newChangeTemIcon);
+			backgroundManager.setThermostatBtn(true);
+			changeTemCheck = true;
 		}
 		else {
-			changeTem.setIcon(newChangeTemIcon);
-			changeTemCheck = true;
+			changeTem.setIcon(changeTemIcon);
+			backgroundManager.setThermostatBtn(false);
+			changeTemCheck = false;
 		}
 	}
 	public void setAutofeedCheck(){
 		if(autofeedCheck) {
-			autofeed.setIcon(autofeedIcon);
-			autofeedCheck = false;
+			autofeed.setIcon(newAutofeedIcon);
+			fishManager.setAutoFeedBtn(true);
+			autofeedCheck = true;
 		}
 		else {
-			autofeed.setIcon(newAutofeedIcon);
-			autofeedCheck = true;
+			autofeed.setIcon(autofeedIcon);
+			fishManager.setAutoFeedBtn(false);
+			autofeedCheck = false;
 		}
 	}
 	
+	public boolean getInflatorCheck()
+	{
+		return inflatorCheck;
+	}
+
+	public boolean getFilterCheck()
+	{
+		return filterCheck;
+	}
+	
+	public boolean getChangeTemCheck()
+	{
+		return changeTemCheck;
+	}
+	
+	public boolean getAutofeedCheck()
+	{
+		return autofeedCheck;
+	}
 }

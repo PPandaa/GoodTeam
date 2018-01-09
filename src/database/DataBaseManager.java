@@ -20,7 +20,6 @@ public class DataBaseManager {
 	private String updateFishSQL = "update fish set category = ?,age = ?,gender = ?,satiation = ?,length = ?,weight = ?,excretion = ?,sick = ?,life = ? where name = ?";
 	private String insertFishSQL = "insert into fish (name,category,age,gender,satiation,length,weight,excretion,sick,life) value(?,?,?,?,?,?,?,?,?,?)";
 	private String selectInitialFishSQL = "select * from initial_fish where category = ?";
-	//private String updateBackgroundSQL = "update background set temperature = ?,pHValue  = ?,oxygenContent = ?,cleanliness = ?,season = ?,date = ?,time = ?,endTime = ?";
 	private String deleteBackgroundSQL = "delete  from background ";
 	private String insertBackgroundSQL = "insert into background (temperature,pHValue,oxygenContent,cleanliness,season,date,time,endTime) value(?,?,?,?,?,?,?,?)";
 	private String selectBackgroundSQL = "select * from background ";
@@ -65,8 +64,7 @@ public class DataBaseManager {
 			Close();
 		}
 	}
-	public SimulateInterface selectButtonTable() {
-		SimulateInterface simulate = new SimulateInterface();
+	public void selectButtonTable(SimulateInterface simulate) {
 		try {
 			stat = con.createStatement();
 			result = stat.executeQuery(selectButtonSQL);
@@ -88,7 +86,6 @@ public class DataBaseManager {
 		finally {
 			Close();
 		}
-		return simulate;
 	}
 	public void deleteButtonTable() {
 		try {
@@ -102,13 +99,6 @@ public class DataBaseManager {
 			Close();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 	public void insertFishTable(Fish fish){
 		try {
@@ -304,26 +294,6 @@ public class DataBaseManager {
 		}
 		return BG;
 	}
-//	public void updateBackgroundTable(double temperature,double pHValue,double oxygenContent,int cleanliness,String season,int date,int time,BigInteger endTime){
-//		try {
-//			pst = con.prepareStatement(updateBackgroundSQL);
-//			pst.setDouble(1,temperature);
-//			pst.setDouble(2,pHValue);
-//			pst.setDouble(3,oxygenContent);
-//			pst.setInt(4,cleanliness);
-//			pst.setString(5,season);
-//			pst.setInt(6,date);
-//			pst.setInt(7,time);
-//			pst.setBigDecimal(8,new BigDecimal(endTime));
-//			pst.executeUpdate();
-//		}
-//		catch(SQLException x){
-//			System.out.println("Exception update"+x.toString());
-//		}
-//		finally {
-//			Close();
-//		}
-//	}
 	private void Close() {
 		try {
 			if(result!=null) {

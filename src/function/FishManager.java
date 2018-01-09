@@ -6,6 +6,7 @@ import java.util.Scanner;
 import background.Background;
 import fish.Fish;
 import fish.FishButton;
+import simulate.SimulateInterface;
 
 /*
    魚：
@@ -64,6 +65,9 @@ public class FishManager
 	/**
 	 * 按下自動餵食按鈕
 	 */
+	public void setAutoFeedBtn(boolean autoFeedBtn) {
+		this.autoFeedBtn = autoFeedBtn;
+	}
 	public void pressAutoFeedBtn(int time)
 	{
 		if (autoFeedBtn)
@@ -192,19 +196,44 @@ public class FishManager
 					var = 0;
 					// 是否在適溫內
 					if (!fishes.get(i).getFish().inSuitableTemperature(background.getTemperature()))
+					{
 						var -= 0.1;
+						fishes.get(i).getFish().suitableTemperature = false;
+					}
+					else 
+						fishes.get(i).getFish().suitableTemperature = true;
 					// 是否在適pH內
 					if (!fishes.get(i).getFish().inSuitablepH(background.getpHValue()))
+					{
 						var -= 0.1;
+						fishes.get(i).getFish().suitablepH = false;
+					}
+					else 
+						fishes.get(i).getFish().suitablepH = true;
 					// 是否在適乾淨度內
 					if (background.getCleanliness() < fishes.get(i).getFish().getSUITABLE_CLEANLINESS())
+					{
 						var -= 0.1;
+						fishes.get(i).getFish().suitableCleanliness = false;
+					}
+					else 
+						fishes.get(i).getFish().suitableCleanliness = true;
 					// 是否在適含氧量內
 					if (background.getOxygenContent() < fishes.get(i).getFish().getSUITABLE_OXYGENCONTENT())
+					{
 						var -= 0.1;
+						fishes.get(i).getFish().suitableOxygenContent = false;
+					}
+					else 	
+						fishes.get(i).getFish().suitableOxygenContent = true;
 					// 是否挨餓中
 					if (fishes.get(i).getFish().isStarving())
+					{
 						var -= 0.1;
+						fishes.get(i).getFish().starving = true;
+					}
+					else
+						fishes.get(i).getFish().starving = false;
 					// 若以上皆符合，且飽食度大於80則生命力每秒上升0.05
 					if (var == 0 && fishes.get(i).getFish().getSatiation() > Fish.SUITABLE_SATIATION)
 						var = 0.05;
@@ -334,5 +363,13 @@ public class FishManager
 				num++;
 		}
 		return num;
+	}
+	
+	public void setButton(SimulateInterface SI)
+	{
+		if (SI.getAutofeedCheck())
+			pressAutoFeedBtn(SI.getAutofeedTime());
+		else
+			autoFeedBtn = false;
 	}
 }

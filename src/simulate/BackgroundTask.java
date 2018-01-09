@@ -35,9 +35,6 @@ public class BackgroundTask extends TimerTask {
 	@Override
 	public void run() {
 		int sec = background.getSecond();
-		//System.out.println("\n\n");
-		//backgroundManager.display();
-		//fishManager.printFishes();
 		
 		growingInfo(sec);
 		

@@ -40,6 +40,12 @@ public class Fish{
 	private boolean attack;  
 	public  int SUITABLE_CLEANLINESS = 0;	//最低乾淨度
 	public  double SUITABLE_OXYGENCONTENT = 0;	//最低含氧量
+	
+	public boolean suitableTemperature = true;
+	public boolean suitablepH = true;
+	public boolean suitableCleanliness = true;
+	public boolean suitableOxygenContent = true;
+	public boolean starving = false;
 
 	private DataBaseManager db = new DataBaseManager();
     private int categoryChoice;//將魚名換算成陣列的index
@@ -347,10 +353,16 @@ public class Fish{
 	public String toString(){
 		if (dead == true)
 			return ("姓名:"+ getName() +" 死亡");
-		return String.format("<html>姓名:%s    <br>魚種:%s    <br>年齡:%d歲        <br>性別:%s\n"
+		String temp = String.format("<html>姓名:%s    <br>魚種:%s    <br>年齡:%d歲        <br>性別:%s\n"
 						   + "<br>飽食度:%d%c    <br>長度:%.5fcm    <br>重量:%.5fg    <br>排泄:%d%c\n"
-						   + "<br>有無生病:%s    <br>生命力:%.0f</html>",
+						   + "<br>有無生病:%s    <br>生命力:%.0f<br>---------------",
 				getName(),getCategory(),getRealAge(),getGender(),getSatiation(),37,length,weight,getExcretion(),37,isSick(),getLife());
+		if (!suitableTemperature)temp += "<br>*不在適溫下(" + suitableMinTemperature + "~" + suitableMaxTemperature + ")*";
+		if (!suitablepH) temp += "<br>*不在適pH下(" + suitableMinpH + "~" + suitableMaxpH + ")*";
+		if (!suitableCleanliness) temp += "<br>*乾淨度過低*";
+		if (!suitableOxygenContent) temp += "<br>*含氧量過低*";
+		if (starving) temp += "<br>*挨餓中*";
+		temp += "</html>";
+		return temp;
 	}
 }
-

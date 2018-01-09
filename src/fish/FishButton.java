@@ -41,8 +41,6 @@ public class FishButton extends JButton{
 		
 		fish = new Fish(name,category,gender,age);
 		setFishButton();
-//		xLength = 150+random.nextInt(50);
-//		yLength = 150+random.nextInt(50);
 	}
 	//取得Fish物件，用來呼叫Fish裡的method
 	public Fish getFish()

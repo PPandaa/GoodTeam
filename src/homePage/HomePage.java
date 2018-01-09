@@ -84,44 +84,4 @@ public class HomePage extends JPanel{
 		//將背景圖的大小設為電腦螢幕的大小
 		background.setBounds(0, 0,dimension.width,dimension.height);
 	}
-
 }
-
-/*public void run()
-{
-Scanner scanner = new Scanner(System.in);
-int input = 0;   //����1����2蝜潛��3隤芣��
-boolean firstIn = true;
-
-System.out.println("甇∟��脣FFS");
-//System.out.println("Start頛詨1 Continue頛詨2 ���牧��撓�3");
-while(input != -1 )
-{
-	System.out.println("1.Start 2.Continue 3.���牧���  -1.蝯��");
-	input = scanner.nextInt();
-	if(firstIn)
-	{
-		System.out.println("甇∟��脣璅⊥隞");
-		firstIn = false;
-	}
-	switch(input)
-	{
-	case 1: 
-		SI = new SimulateInterface();
-		input = SI.run();
-		break;
-	case 2:
-		input = SI.run();
-		break;
-	case 3:
-		Instruction.getInstruction();
-		input = scanner.nextInt();
-		break;
-	case -1:
-		break;
-	default:
-		System.out.println("Try again!");
-	}
-}
-System.out.println("蝯��");
-}*/

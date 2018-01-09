@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-
+import database.DataBaseManager;
+import fish.Fish;
 import fish.FishButton;
 import simulate.SimulateInterface;
 
@@ -52,20 +53,20 @@ public class FishStore extends JPanel {
 		String[] fishGender = {"雄","雌"};
 		String[] ages = {"1","2","3","4","5","6","7","8","9","10"};
 		String a = String.format("初始長度: 4cm\n初始重量: 47g\n適合溫度: 23~28°C\n適合pH值: 5.5~7.5\n適合含氧量: 5.5ppm\n適合乾淨度: 60%s\n性格: 兇猛","%");
-		String b = String.format("初始長度: 3cm\n初始重量: 34g\n適合溫度: 12~26°C\n適合pH值: 7.0~7.5\n適合含氧量: 5.0ppm\n適合乾淨度: 65%s\n性格: 溫馴","%");
-		String c = String.format("初始長度: 5cm\n初始重量: 55g\n適合溫度: 26~27°C\n適合pH值: 8.0~8.5\n適合含氧量: 5.1ppm\n適合乾淨度: 60%s\n性格: 溫馴","%");
+		String b = String.format("初始長度: 3cm\n初始重量: 34g\n適合溫度: 12~26°C\n適合pH值: 6.0~7.5\n適合含氧量: 5.0ppm\n適合乾淨度: 65%s\n性格: 溫馴","%");
+		String c = String.format("初始長度: 5cm\n初始重量: 56g\n適合溫度: 26~27°C\n適合pH值: 8.0~6.6\n適合含氧量: 5.1ppm\n適合乾淨度: 60%s\n性格: 溫馴","%");
 		String d = String.format("初始長度: 3cm\n初始重量: 36g\n適合溫度: 20~26°C\n適合pH值: 6.5~7.5\n適合含氧量: 6.3ppm\n適合乾淨度: 55%s\n性格: 溫馴","%");
 		String e = String.format("初始長度: 5cm\n初始重量: 53g\n適合溫度: 22~26°C\n適合pH值: 6.8~7.2\n適合含氧量: 6.2ppm\n適合乾淨度: 70%s\n性格: 溫馴","%");
-		String f = String.format("初始長度: 7cm\n初始重量: 79g\n適合溫度: 24~26°C\n適合pH值: 8.0~8.0\n適合含氧量: 5.8ppm\n適合乾淨度: 57%s\n性格: 溫馴","%");
+		String f = String.format("初始長度: 7cm\n初始重量: 79g\n適合溫度: 24~26°C\n適合pH值: 6.8~8.0\n適合含氧量: 5.8ppm\n適合乾淨度: 57%s\n性格: 溫馴","%");
 		String g = String.format("初始長度: 5cm\n初始重量: 55g\n適合溫度: 24~28°C\n適合pH值: 6.0~7.0\n適合含氧量: 6.5ppm\n適合乾淨度: 72%s\n性格: 溫馴","%");
-		String h = String.format("初始長度: 3cm\n初始重量: 31g\n適合溫度: 20~26°C\n適合pH值: 5.0~7.0\n適合含氧量: 5.5ppm\n適合乾淨度: 52%s\n性格: 溫馴","%");
-		String i = String.format("初始長度: 4cm\n初始重量: 49g\n適合溫度: 24~28°C\n適合pH值: 5.0~6.0\n適合含氧量: 5.4ppm\n適合乾淨度: 54%s\n性格: 溫馴","%");
+		String h = String.format("初始長度: 2cm\n初始重量: 26g\n適合溫度: 20~26°C\n適合pH值: 5.0~7.0\n適合含氧量: 5.5ppm\n適合乾淨度: 52%s\n性格: 溫馴","%");
+		String i = String.format("初始長度: 4cm\n初始重量: 49g\n適合溫度: 24~28°C\n適合pH值: 5.0~6.5\n適合含氧量: 5.4ppm\n適合乾淨度: 54%s\n性格: 溫馴","%");
 		String j = String.format("初始長度: 5cm\n初始重量: 58g\n適合溫度: 22~25°C\n適合pH值: 6.0~6.8\n適合含氧量: 5.0ppm\n適合乾淨度: 50%s\n性格: 溫馴","%");
 		String k = String.format("初始長度: 2cm\n初始重量: 25g\n適合溫度: 23~28°C\n適合pH值: 5.8~7.2\n適合含氧量: 5.6ppm\n適合乾淨度: 50%s\n性格: 溫馴","%");
-		String l = String.format("初始長度: 4cm\n初始重量: 46g\n適合溫度: 23~28°C\n適合pH值: 5.5~7.0\n適合含氧量: 5.8ppm\n適合乾淨度: 52%s\n性格: 溫馴","%");
+		String l = String.format("初始長度: 7cm\n初始重量: 69g\n適合溫度: 23~28°C\n適合pH值: 5.5~7.0\n適合含氧量: 5.8ppm\n適合乾淨度: 52%s\n性格: 溫馴","%");
 		String m = String.format("初始長度: 3cm\n初始重量: 33g\n適合溫度: 22~26°C\n適合pH值: 6.8~7.4\n適合含氧量: 6.7ppm\n適合乾淨度: 62%s\n性格: 溫馴","%");
-		String n = String.format("初始長度: 4cm\n初始重量: 42g\n適合溫度: 23~28°C\n適合pH值: 7.2~8.0\n適合含氧量: 7.0ppm\n適合乾淨度: 70%s\n性格: 兇猛","%");
-		String o = String.format("初始長度: 2cm\n初始重量: 25g\n適合溫度: 23~26°C\n適合pH值: 7.0~7.4\n適合含氧量: 5.6ppm\n適合乾淨度: 56%s\n性格: 溫馴","%");
+		String n = String.format("初始長度: 4cm\n初始重量: 42g\n適合溫度: 23~28°C\n適合pH值: 6.7~8.0\n適合含氧量: 7.0ppm\n適合乾淨度: 70%s\n性格: 兇猛","%");
+		String o = String.format("初始長度: 2cm\n初始重量: 25g\n適合溫度: 23~26°C\n適合pH值: 6.3~7.4\n適合含氧量: 5.6ppm\n適合乾淨度: 56%s\n性格: 溫馴","%");
 		String[] character = {a,b,c,d,e,f,g,h,i,j,k,l,m,n,o};
 		textArea = new JTextArea(a);
 		textArea.setFont(new Font("標楷體", Font.BOLD, 40));
@@ -122,8 +123,7 @@ public class FishStore extends JPanel {
 		in.setBorder(null);//不繪製按鈕的邊
 		in.setContentAreaFilled(false);//不會自行繪製按鈕背景
 		//JTextField textArea = new JTextField("");
-		
-		
+
 		//設定位置
 		back.setBounds(0,0,371,168);
 		title.setBounds(500,0,600,150);
@@ -173,7 +173,5 @@ public class FishStore extends JPanel {
 		//將Panel放入視窗中
 		add(middle);
 	}
-	
-	
 }
 

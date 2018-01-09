@@ -28,8 +28,6 @@ public class Setting extends JPanel{
 	public JButton homepage;
 	public Setting(JFrame frame, SimulateInterface SI) {		
 		
-		//setBackground(frame); //調用背景方法
-		//Container c = getContentPane(); //獲取JFrame面板
 		this.SI = SI;
 		setLayout(null); 
 		this.setOpaque(false); //把JPanel設置為透明 這樣就不會遮住後面的背景 這樣你就能在JPanel隨意加元件了
@@ -180,7 +178,6 @@ public class Setting extends JPanel{
 		_512X.addActionListener(handler);
 		add(_512X);     
 		add(speedUp);
-		
 
 	}
 	
@@ -193,4 +190,3 @@ public class Setting extends JPanel{
 		}
 	}
 }
-
