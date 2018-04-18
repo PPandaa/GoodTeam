@@ -8,7 +8,7 @@ FFS由環境、魚和魚店等模組組成。在開始養的時候，環境的�
 
 *前端及後端皆為使用Java。
 
-
+系統操作連結:https://www.youtube.com/watch?v=VyJX-J9eSZE
 
 
 課名:軟體工程 (研究所課程)。
